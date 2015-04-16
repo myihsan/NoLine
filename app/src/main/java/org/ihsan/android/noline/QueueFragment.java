@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.melnykov.fab.FloatingActionButton;
 import com.tencent.android.tpush.XGPushConfig;
 
+import java.math.BigDecimal;
+
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
@@ -68,7 +70,8 @@ public class QueueFragment extends Fragment {
         int[] colors = getResources().getIntArray(R.array.header_colors);
         header.setColorSchemeColors(colors);
         header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-        header.setPadding(0, DisplayUtil.dp2px(getActivity(), 10), 0, DisplayUtil.dp2px(getActivity(), 10));
+        int headerPadding = new BigDecimal(getResources().getDimension(R.dimen.list_header_padding)).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+        header.setPadding(0, headerPadding, 0, headerPadding);
         header.setPtrFrameLayout(mFrame);
 
         mFrame.setLoadingMinTime(1000);
@@ -147,7 +150,7 @@ public class QueueFragment extends Fragment {
                     .getInt(getString(R.string.queued_queue), -1);
             int number = Integer.valueOf(mMyNumberTextView.getText().toString());
             String token = XGPushConfig.getToken(getActivity());
-            return new DataFetcher(getActivity()).fetchQuitQueueResult(queueId,number,token);
+            return new DataFetcher(getActivity()).fetchQuitQueueResult(queueId, number, token);
         }
 
         @Override
