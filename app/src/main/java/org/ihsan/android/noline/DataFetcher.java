@@ -57,7 +57,7 @@ public class DataFetcher {
     public ArrayList<Queue> fetchQueue() {
         ArrayList<Queue> queues = new ArrayList<Queue>();
 
-        String fetchUrl = mContext.getString(R.string.root_url)+"queue.php";
+        String fetchUrl = mContext.getString(R.string.root_url)+"getqueue.php";
         String url = Uri.parse(fetchUrl).buildUpon().build().toString();
         Log.d(TAG, url);
         try {
@@ -80,25 +80,25 @@ public class DataFetcher {
         }
     }
 
-    public boolean fetchQueueDetail(Queue queue){
-        String fetchUrl = mContext.getString(R.string.root_url)+"getqueuedetail.php";
-        String url = Uri.parse(fetchUrl).buildUpon()
-                .appendQueryParameter("queueId", String.valueOf(queue.getId()))
-                .build().toString();
-        try {
-            String result = getUrl(url);
-            JSONObject jsonObject = new JSONObject(result);
-            queue.setNextNumber(jsonObject.getInt("nextNumber"));
-            queue.setTotal(jsonObject.getInt("total"));
-        } catch (IOException ioe) {
-            Log.e(TAG, "Failed to fetch URL: ", ioe);
-            return false;
-        } catch (JSONException jsone) {
-            Log.e(TAG, "Failed to parse detail", jsone);
-            return false;
-        }
-        return true;
-    }
+//    public boolean fetchQueueDetail(Queue queue){
+//        String fetchUrl = mContext.getString(R.string.root_url)+"getqueuedetail.php";
+//        String url = Uri.parse(fetchUrl).buildUpon()
+//                .appendQueryParameter("queueId", String.valueOf(queue.getId()))
+//                .build().toString();
+//        try {
+//            String result = getUrl(url);
+//            JSONObject jsonObject = new JSONObject(result);
+//            queue.setState(jsonObject.getInt("nextNumber"));
+//            queue.setTotal(jsonObject.getInt("total"));
+//        } catch (IOException ioe) {
+//            Log.e(TAG, "Failed to fetch URL: ", ioe);
+//            return false;
+//        } catch (JSONException jsone) {
+//            Log.e(TAG, "Failed to parse detail", jsone);
+//            return false;
+//        }
+//        return true;
+//    }
 
     public int fetchNowQueuer(int queueId) {
         if (queueId != -1) {

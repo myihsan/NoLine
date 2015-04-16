@@ -8,13 +8,13 @@ import org.json.JSONObject;
  */
 public class Queue {
     private int mId;
-    private String mTitle;
-    private int mNextNumber;
-    private int mTotal;
+    private String mName;
+    private int mState;
 
     public Queue(JSONObject jsonQueue) throws JSONException {
         mId = Integer.valueOf(jsonQueue.getString("id"));
-        mTitle = jsonQueue.getString("title");
+        mName = jsonQueue.getString("name");
+        mState = Integer.valueOf(jsonQueue.getString("state"));
     }
 
     public int getId() {
@@ -25,27 +25,19 @@ public class Queue {
         mId = id;
     }
 
-    public String getTitle() {
-        return mTitle;
+    public String getName() {
+        return mName;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
+    public void setName(String name) {
+        mName = name;
     }
 
-    public int getNextNumber() {
-        return mNextNumber;
+    public int getState() {
+        return mState;
     }
 
-    public void setNextNumber(int nextNumber) {
-        mNextNumber = nextNumber;
-    }
-
-    public int getTotal() {
-        return mTotal;
-    }
-
-    public void setTotal(int total) {
-        mTotal = total;
+    public void setState(int state) {
+        mState = state;
     }
 }

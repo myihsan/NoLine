@@ -76,7 +76,7 @@ public class QueueListFragment extends ListFragment {
 
             TextView titleTextView =
                     (TextView) convertView.findViewById(R.id.queue_list_item_titleTextView);
-            titleTextView.setText(queue.getTitle());
+            titleTextView.setText(queue.getName());
 
             return convertView;
         }
