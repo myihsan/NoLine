@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">NoLine</string>
+    <string name="queue_now_label">当前</string>
+    <string name="queue_total_label">排队人数</string>
+    <string name="queue_up_button">加入队列</string>
+    <string name="queued_number">queuedNumber</string>
+    <string name="queued_queue">queuedQueue</string>
+    <string name="queue_my_number">我的编号</string>
+    <string name="queue_identification">识别码</string>
+    <string name="quit_queue">退出队列</string>
+
+    <!-- 请求的根地址 -->
+    <string name="root_url">http://192.168.43.195/CCBUPTService/</string>
+</resources>
