@@ -9,6 +9,4 @@
     <string name="queue_identification">识别码</string>
     <string name="quit_queue">退出队列</string>
 
-    <!-- 请求的根地址 -->
-    <string name="root_url">http://192.168.43.195/CCBUPTService/</string>
 </resources>
