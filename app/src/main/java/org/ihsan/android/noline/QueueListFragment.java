@@ -76,9 +76,9 @@ public class QueueListFragment extends ListFragment {
             Queue queue = getItem(position);
 
             TextView titleTextView =
-                    (TextView) convertView.findViewById(R.id.queue_list_item_titleTextView);
+                    (TextView) convertView.findViewById(R.id.queue_list_item_nameTextView);
             titleTextView.setText(queue.getName());
-            RatingBar ratingBar= (RatingBar) convertView.findViewById(R.id.ratingBar);
+            RatingBar ratingBar= (RatingBar) convertView.findViewById(R.id.queue_list_item_ratingBar);
             ratingBar.setRating(queue.getRating());
 
             return convertView;

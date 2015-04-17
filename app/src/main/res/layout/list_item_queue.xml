@@ -15,18 +15,18 @@
         android:layout_gravity="center_vertical">
 
         <TextView
-            android:id="@+id/queue_list_item_titleTextView"
+            android:id="@+id/queue_list_item_nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/body_text_1"
             android:textSize="20sp"
-            tools:text="队列标题预览"
+            tools:text="队列名预览"
             android:paddingBottom="8dp"
             />
         <RatingBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ratingBar"
+            android:id="@+id/queue_list_item_ratingBar"
             style="?android:attr/ratingBarStyleSmall"
             android:clickable="false"/>
     </LinearLayout>
