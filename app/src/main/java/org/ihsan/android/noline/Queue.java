@@ -9,11 +9,13 @@ import org.json.JSONObject;
 public class Queue {
     private int mId;
     private String mName;
+    private float mRating;
     private int mState;
 
     public Queue(JSONObject jsonQueue) throws JSONException {
         mId = Integer.valueOf(jsonQueue.getString("id"));
         mName = jsonQueue.getString("name");
+        mRating= Float.parseFloat(jsonQueue.getString("rating"));
         mState = Integer.valueOf(jsonQueue.getString("state"));
     }
 
@@ -31,6 +33,14 @@ public class Queue {
 
     public void setName(String name) {
         mName = name;
+    }
+
+    public float getRating() {
+        return mRating;
+    }
+
+    public void setRating(float rating) {
+        mRating = rating;
     }
 
     public int getState() {
