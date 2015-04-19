@@ -22,8 +22,8 @@ public class DataFetcher {
     private static final String TAG = "DataFetcher";
     private Context mContext;
 
-    public DataFetcher(Context context){
-        mContext=context;
+    public DataFetcher(Context context) {
+        mContext = context;
     }
 
     private byte[] getUrlBytes(String urlSpec) throws IOException {
@@ -57,7 +57,7 @@ public class DataFetcher {
     public ArrayList<Queue> fetchQueue() {
         ArrayList<Queue> queues = new ArrayList<Queue>();
 
-        String fetchUrl = mContext.getString(R.string.root_url)+"getqueue.php";
+        String fetchUrl = mContext.getString(R.string.root_url) + "getqueue.php";
         String url = Uri.parse(fetchUrl).buildUpon().build().toString();
         Log.d(TAG, url);
         try {
@@ -80,25 +80,37 @@ public class DataFetcher {
         }
     }
 
-//    public boolean fetchQueueDetail(Queue queue){
-//        String fetchUrl = mContext.getString(R.string.root_url)+"getqueuedetail.php";
-//        String url = Uri.parse(fetchUrl).buildUpon()
-//                .appendQueryParameter("queueId", String.valueOf(queue.getId()))
-//                .build().toString();
-//        try {
-//            String result = getUrl(url);
-//            JSONObject jsonObject = new JSONObject(result);
-//            queue.setState(jsonObject.getInt("nextNumber"));
-//            queue.setTotal(jsonObject.getInt("total"));
-//        } catch (IOException ioe) {
-//            Log.e(TAG, "Failed to fetch URL: ", ioe);
-//            return false;
-//        } catch (JSONException jsone) {
-//            Log.e(TAG, "Failed to parse detail", jsone);
-//            return false;
-//        }
-//        return true;
-//    }
+    public ArrayList<Subqueue> fetchQueueDetail(Queue queue) {
+        String fetchUrl = mContext.getString(R.string.root_url) + "getqueuedetail.php";
+        String url = Uri.parse(fetchUrl).buildUpon()
+                .appendQueryParameter("queueId", String.valueOf(queue.getId()))
+                .build().toString();
+        ArrayList<Subqueue> subqueues = new ArrayList<Subqueue>();
+        try {
+            String result = getUrl(url);
+            JSONObject jsonObject = new JSONObject(result);
+            queue.setAddress(jsonObject.getString("address"));
+            JSONArray subqueueNames = jsonObject.getJSONArray("subqueueNames");
+            JSONArray subqueueSizes = jsonObject.getJSONArray("subqueueSizes");
+            JSONArray subqueueTotals = jsonObject.getJSONArray("subqueueTotals");
+            JSONArray subqueueFirstNumbers = jsonObject.getJSONArray("subqueueFirstNumbers");
+            for (int i=0;i<subqueueNames.length();i++){
+                Subqueue subqueue=new Subqueue();
+                subqueue.setName(subqueueNames.getString(i));
+                subqueue.setSize(subqueueSizes.getInt(i));
+                subqueue.setTotal(subqueueTotals.getInt(i));
+                subqueue.setFirstNumber(subqueueFirstNumbers.getInt(i));
+                subqueues.add(subqueue);
+            }
+        } catch (IOException ioe) {
+            Log.e(TAG, "Failed to fetch URL: ", ioe);
+            return null;
+        } catch (JSONException jsone) {
+            Log.e(TAG, "Failed to parse detail", jsone);
+            return null;
+        }
+        return subqueues;
+    }
 
     public int fetchNowQueuer(int queueId) {
         if (queueId != -1) {
@@ -121,7 +133,7 @@ public class DataFetcher {
         return -1;
     }
 
-    public boolean fetchQuitQueueResult(int queueId,int number,String token) {
+    public boolean fetchQuitQueueResult(int queueId, int number, String token) {
         boolean flag = false;
         String fetchUrl = mContext.getString(R.string.root_url) + "quitqueue.php";
         String url = Uri.parse(fetchUrl).buildUpon()

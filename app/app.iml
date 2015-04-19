@@ -90,6 +90,7 @@
     <orderEntry type="library" exported="" name="floatingactionbutton-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
+    <orderEntry type="library" exported="" name="material-ripple-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="mid-sdk-2.10" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="wup-1.0.0-SNAPSHOT" level="project" />

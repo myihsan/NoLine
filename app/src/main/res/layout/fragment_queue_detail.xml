@@ -1,69 +1,174 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<RelativeLayout-->
 
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+
+<!--<LinearLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:divider="?android:attr/listDivider"-->
+<!--android:orientation="vertical"-->
+<!--android:showDividers="middle">-->
+
+
+<!--<LinearLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_marginBottom="8dp"-->
+<!--android:orientation="vertical"-->
+<!--android:padding="16dp">-->
+
+<!--<TextView-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:text="@string/queue_now_label"-->
+<!--android:textSize="20sp"/>-->
+
+<!--<TextView-->
+<!--android:id="@+id/queue_detail_now_textView"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_gravity="center"-->
+<!--android:textColor="@color/body_text_1"-->
+<!--android:textSize="80sp"/>-->
+<!--</LinearLayout>-->
+
+<!--<LinearLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:orientation="vertical"-->
+<!--android:padding="16dp">-->
+
+<!--<TextView-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:text="@string/queue_total_label"-->
+<!--android:textSize="20sp"/>-->
+
+<!--<TextView-->
+<!--android:id="@+id/queue_detail_total_textView"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_gravity="center"-->
+<!--android:textColor="@color/body_text_1"-->
+<!--android:textSize="80sp"/>-->
+<!--</LinearLayout>-->
+<!--</LinearLayout>-->
+
+<!--<Button-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_alignParentBottom="true"-->
+<!--android:text="@string/queue_up_button"-->
+<!--android:id="@+id/queue_detail_queue_up_button"-->
+<!--android:layout_margin="16dp"/>-->
+<!--</RelativeLayout>-->
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:divider="@android:drawable/divider_horizontal_bright"
+    android:dividerPadding="0dp"
+    android:orientation="vertical"
+    android:showDividers="middle|end">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="?android:attr/listDivider"
+        android:layout_height="88dp"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:showDividers="middle">
+        android:paddingLeft="16dp"
+        >
 
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/queue_detail_nameTextView"
+            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="8dp"
+            tools:text="队列标题预览"
+            />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/queue_now_label"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:id="@+id/queue_detail_now_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/body_text_1"
-                android:textSize="80sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RatingBar
+            android:id="@+id/queue_detail_ratingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/queue_total_label"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:id="@+id/queue_detail_total_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/body_text_1"
-                android:textSize="80sp"/>
-        </LinearLayout>
+            android:clickable="false"/>
     </LinearLayout>
 
-    <Button
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/queue_detail_address"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:drawableLeft="@drawable/ic_location_on_grey600_24dp"
+            android:drawablePadding="16dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            tools:text="测试地址"
+            />
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="@string/queue_up_button"
-        android:id="@+id/queue_detail_queue_up_button"
-        android:layout_margin="16dp"/>
-</RelativeLayout>
+        android:divider="@android:drawable/divider_horizontal_bright"
+        android:dividerPadding="0dp"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:id="@+id/subqueue_linearLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="队列"/>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="容纳人数"/>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="等待中"/>
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="当前"/>
+        </LinearLayout>
+
+        <!--<include layout="@layout/table_item_subqueue"/>-->
+    </LinearLayout>
+</LinearLayout>

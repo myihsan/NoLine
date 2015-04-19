@@ -6,15 +6,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tencent.android.tpush.XGPushConfig;
+
+import java.util.ArrayList;
 
 /**
  * Created by Ihsan on 15/2/5.
@@ -24,7 +26,10 @@ public class QueueDetailFragment extends Fragment {
     public static final String EXTRA_QUEUE_ID =
             "com.l3.android.ccbuptservice.queue_id";
 
-    private TextView mNowTextView, mTotalTextView;
+    private TextView mNameTextView;
+    private RatingBar mRatingBar;
+    private TextView mAddressTextView;
+    private LinearLayout mSubqueueLinearLayout;
 
     private Queue mQueue;
 
@@ -47,7 +52,6 @@ public class QueueDetailFragment extends Fragment {
         }
         if (queueId != -1) {
             mQueue = QueueArray.get(getActivity()).getQueue(queueId);
-            ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(mQueue.getTitle());
         }
     }
 
@@ -56,35 +60,49 @@ public class QueueDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_queue_detail, container, false);
 
-        mNowTextView = (TextView) view.findViewById(R.id.queue_detail_now_textView);
-        mTotalTextView = (TextView) view.findViewById(R.id.queue_detail_total_textView);
+        mNameTextView = (TextView) view.findViewById(R.id.queue_detail_nameTextView);
+        mRatingBar = (RatingBar) view.findViewById(R.id.queue_detail_ratingBar);
+        mAddressTextView = (TextView) view.findViewById(R.id.queue_detail_address);
+        mSubqueueLinearLayout = (LinearLayout) view.findViewById(R.id.subqueue_linearLayout);
 
-        Button queueUpButton = (Button) view.findViewById(R.id.queue_detail_queue_up_button);
-        queueUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new QueueUpTask().execute();
-            }
-        });
+        mNameTextView.setText(mQueue.getName());
+        mRatingBar.setRating(mQueue.getRating());
+
+//        Button queueUpButton = (Button) view.findViewById(R.id.queue_detail_queue_up_button);
+//        queueUpButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                new QueueUpTask().execute();
+//            }
+//        });
 
         new GetDetailTask().execute();
 
         return view;
     }
 
-    private class GetDetailTask extends AsyncTask<Void, Void, Boolean> {
+    private class GetDetailTask extends AsyncTask<Void, Void, ArrayList<Subqueue>> {
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected ArrayList<Subqueue> doInBackground(Void... params) {
             return new DataFetcher(getActivity()).fetchQueueDetail(mQueue);
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            if (aBoolean) {
-                if (mQueue.getNextNumber() != 0) {
-                    mNowTextView.setText(String.valueOf(mQueue.getNextNumber()));
+        protected void onPostExecute(ArrayList<Subqueue> subqueues) {
+            if (subqueues != null) {
+                mAddressTextView.setText(String.valueOf(mQueue.getAddress()));
+                for (Subqueue subqueue : subqueues) {
+                    View subqueueView = getActivity().getLayoutInflater().inflate(R.layout.table_item_subqueue, mSubqueueLinearLayout, false);
+                    TextView subqueueNameTextView = (TextView) subqueueView.findViewById(R.id.subqueue_name_textView);
+                    TextView subqueueSizeTextView = (TextView) subqueueView.findViewById(R.id.subqueue_size_textView);
+                    TextView subqueueTotalTextView = (TextView) subqueueView.findViewById(R.id.subqueue_total_textView);
+                    TextView subqueueFirstNumberTextView = (TextView) subqueueView.findViewById(R.id.subqueue_first_number_textView);
+                    subqueueNameTextView.setText(subqueue.getName());
+                    subqueueSizeTextView.setText(String.valueOf(subqueue.getSize()));
+                    subqueueTotalTextView.setText(String.valueOf(subqueue.getTotal()));
+                    subqueueFirstNumberTextView.setText(String.valueOf(subqueue.getFirstNumber()));
+                    mSubqueueLinearLayout.addView(subqueueView);
                 }
-                mTotalTextView.setText(String.valueOf(mQueue.getTotal()));
             } else {
                 Toast.makeText(getActivity(), "获取队列信息失败，请重试", Toast.LENGTH_LONG).show();
             }

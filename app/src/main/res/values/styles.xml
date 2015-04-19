@@ -23,5 +23,4 @@
         <item name="android:textColor">@color/icons</item>
         <item name="android:textSize">18sp</item>
     </style>
-
 </resources>

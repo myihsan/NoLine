@@ -11,6 +11,7 @@ public class Queue {
     private String mName;
     private float mRating;
     private int mState;
+    private String mAddress;
 
     public Queue(JSONObject jsonQueue) throws JSONException {
         mId = Integer.valueOf(jsonQueue.getString("id"));
@@ -49,5 +50,13 @@ public class Queue {
 
     public void setState(int state) {
         mState = state;
+    }
+
+    public String getAddress() {
+        return mAddress;
+    }
+
+    public void setAddress(String address) {
+        mAddress = address;
     }
 }
