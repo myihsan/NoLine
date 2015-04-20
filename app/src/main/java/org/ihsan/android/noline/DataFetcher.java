@@ -154,11 +154,12 @@ public class DataFetcher {
         return flag;
     }
 
-    public int fetchQueueUpResult(int queueId, String token) {
+    public int fetchQueueUpResult(int queueId,int subqueueNumber, String userId) {
         String fetchUrl = mContext.getString(R.string.root_url) + "queueup.php";
         String url = Uri.parse(fetchUrl).buildUpon()
                 .appendQueryParameter("queueId", String.valueOf(queueId))
-                .appendQueryParameter("token", token)
+                .appendQueryParameter("subqueueNumber",String.valueOf(subqueueNumber))
+                .appendQueryParameter("userId", userId)
                 .build().toString();
         try {
             String result = getUrl(url);

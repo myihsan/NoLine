@@ -2,6 +2,7 @@ package org.ihsan.android.noline;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,6 +15,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.tencent.android.tpush.XGPushConfig;
 
 import java.util.ArrayList;
@@ -88,10 +90,10 @@ public class QueueDetailFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Subqueue> subqueues) {
+        protected void onPostExecute(final ArrayList<Subqueue> subqueues) {
             if (subqueues != null) {
                 mAddressTextView.setText(String.valueOf(mQueue.getAddress()));
-                for (Subqueue subqueue : subqueues) {
+                for (final Subqueue subqueue : subqueues) {
                     View subqueueView = getActivity().getLayoutInflater().inflate(R.layout.table_item_subqueue, mSubqueueLinearLayout, false);
                     TextView subqueueNameTextView = (TextView) subqueueView.findViewById(R.id.subqueue_name_textView);
                     TextView subqueueSizeTextView = (TextView) subqueueView.findViewById(R.id.subqueue_size_textView);
@@ -101,6 +103,24 @@ public class QueueDetailFragment extends Fragment {
                     subqueueSizeTextView.setText(String.valueOf(subqueue.getSize()));
                     subqueueTotalTextView.setText(String.valueOf(subqueue.getTotal()));
                     subqueueFirstNumberTextView.setText(String.valueOf(subqueue.getFirstNumber()));
+                    subqueueView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new MaterialDialog.Builder(getActivity())
+                                    .title("是否加入" + subqueue.getName() + "队列")
+                                    .content("现在还需等待" + subqueue.getTotal() + "位")
+                                    .positiveText("确定")
+                                    .negativeText("取消")
+                                    .callback(new MaterialDialog.ButtonCallback() {
+                                        @Override
+                                        public void onPositive(MaterialDialog dialog) {
+                                            new QueueUpTask().execute(subqueues.indexOf(subqueue));
+//                                            super.onPositive(dialog);
+                                        }
+                                    })
+                                    .show();
+                        }
+                    });
                     mSubqueueLinearLayout.addView(subqueueView);
                 }
             } else {
@@ -109,12 +129,13 @@ public class QueueDetailFragment extends Fragment {
         }
     }
 
-    private class QueueUpTask extends AsyncTask<Void, Void, Integer> {
+    private class QueueUpTask extends AsyncTask<Integer, Void, Integer> {
+
         @Override
-        protected Integer doInBackground(Void... params) {
+        protected Integer doInBackground(Integer... params) {
             int queueId = mQueue.getId();
-            String token = XGPushConfig.getToken(getActivity());
-            return new DataFetcher(getActivity()).fetchQueueUpResult(queueId, token);
+            String userId = XGPushConfig.getToken(getActivity());
+            return new DataFetcher(getActivity()).fetchQueueUpResult(queueId, params[0], userId);
         }
 
         @Override
