@@ -103,22 +103,19 @@
             android:clickable="false"/>
     </LinearLayout>
 
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/queue_detail_address"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:drawableLeft="@drawable/ic_location_on_grey600_24dp"
-            android:drawablePadding="16dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            tools:text="测试地址"
-            />
-    </com.balysv.materialripple.MaterialRippleLayout>
+    <TextView
+        android:id="@+id/queue_detail_address"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="?android:selectableItemBackground"
+        android:drawableLeft="@drawable/ic_location_on_grey600_24dp"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        tools:text="测试地址"
+        />
 
     <LinearLayout
         android:id="@+id/subqueue_linearLayout"

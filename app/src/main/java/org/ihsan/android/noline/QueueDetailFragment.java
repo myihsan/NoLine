@@ -93,6 +93,12 @@ public class QueueDetailFragment extends Fragment {
         protected void onPostExecute(final ArrayList<Subqueue> subqueues) {
             if (subqueues != null) {
                 mAddressTextView.setText(String.valueOf(mQueue.getAddress()));
+                mAddressTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
                 for (final Subqueue subqueue : subqueues) {
                     View subqueueView = getActivity().getLayoutInflater().inflate(R.layout.table_item_subqueue, mSubqueueLinearLayout, false);
                     TextView subqueueNameTextView = (TextView) subqueueView.findViewById(R.id.subqueue_name_textView);
