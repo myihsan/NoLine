@@ -1,72 +1,3 @@
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<RelativeLayout-->
-
-<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--xmlns:tools="http://schemas.android.com/tools"-->
-
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent">-->
-
-<!--<LinearLayout-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent"-->
-<!--android:divider="?android:attr/listDivider"-->
-<!--android:orientation="vertical"-->
-<!--android:showDividers="middle">-->
-
-
-<!--<LinearLayout-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:layout_marginBottom="8dp"-->
-<!--android:orientation="vertical"-->
-<!--android:padding="16dp">-->
-
-<!--<TextView-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:text="@string/queue_now_label"-->
-<!--android:textSize="20sp"/>-->
-
-<!--<TextView-->
-<!--android:id="@+id/queue_detail_now_textView"-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:layout_gravity="center"-->
-<!--android:textColor="@color/body_text_1"-->
-<!--android:textSize="80sp"/>-->
-<!--</LinearLayout>-->
-
-<!--<LinearLayout-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:orientation="vertical"-->
-<!--android:padding="16dp">-->
-
-<!--<TextView-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:text="@string/queue_total_label"-->
-<!--android:textSize="20sp"/>-->
-
-<!--<TextView-->
-<!--android:id="@+id/queue_detail_total_textView"-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:layout_gravity="center"-->
-<!--android:textColor="@color/body_text_1"-->
-<!--android:textSize="80sp"/>-->
-<!--</LinearLayout>-->
-<!--</LinearLayout>-->
-
-<!--<Button-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:layout_alignParentBottom="true"-->
-<!--android:text="@string/queue_up_button"-->
-<!--android:id="@+id/queue_detail_queue_up_button"-->
-<!--android:layout_margin="16dp"/>-->
-<!--</RelativeLayout>-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -76,31 +7,48 @@
     android:divider="@android:drawable/divider_horizontal_bright"
     android:dividerPadding="0dp"
     android:orientation="vertical"
-    android:showDividers="middle|end">
+    android:showDividers="middle|end"
+    android:background="@color/md_white_1000">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="88dp"
         android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="16dp"
         >
 
-        <TextView
-            android:id="@+id/queue_detail_nameTextView"
-            style="@style/TextAppearance.AppCompat.Title"
+
+        <ImageView
+            android:id="@+id/queue_detail_imageView"
+            android:layout_width="72dp"
+            android:layout_height="54dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/placeholder"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            tools:text="队列标题预览"
-            />
+            android:orientation="vertical"
+            >
 
-        <RatingBar
-            android:id="@+id/queue_detail_ratingBar"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"/>
+            <TextView
+                android:id="@+id/queue_detail_nameTextView"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                tools:text="队列标题预览"
+                />
+
+            <RatingBar
+                android:id="@+id/queue_detail_ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"/>
+        </LinearLayout>
     </LinearLayout>
 
 

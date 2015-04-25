@@ -8,6 +8,7 @@ import org.json.JSONObject;
  */
 public class Queue {
     private int mId;
+    private String mImage;
     private String mName;
     private float mRating;
     private int mState;
@@ -15,8 +16,9 @@ public class Queue {
 
     public Queue(JSONObject jsonQueue) throws JSONException {
         mId = Integer.valueOf(jsonQueue.getString("id"));
+        mImage = jsonQueue.getString("image");
         mName = jsonQueue.getString("name");
-        mRating= Float.parseFloat(jsonQueue.getString("rating"));
+        mRating = Float.parseFloat(jsonQueue.getString("rating"));
         mState = Integer.valueOf(jsonQueue.getString("state"));
     }
 
@@ -26,6 +28,14 @@ public class Queue {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public String getImage() {
+        return mImage;
+    }
+
+    public void setImage(String image) {
+        mImage = image;
     }
 
     public String getName() {

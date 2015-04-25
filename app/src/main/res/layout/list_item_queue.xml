@@ -3,31 +3,42 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:background="@color/md_white_1000"
+              android:gravity="center_vertical"
               android:minHeight="88dp"
               android:orientation="horizontal"
               android:paddingLeft="16dp"
               android:paddingRight="16dp">
 
+    <ImageView
+        android:id="@+id/queue_list_item_imageView"
+        android:layout_width="72dp"
+        android:layout_height="54dp"
+        android:layout_marginRight="16dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/placeholder"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/queue_list_item_nameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:textColor="@color/body_text_1"
             android:textSize="20sp"
             tools:text="队列名预览"
-            android:paddingBottom="8dp"
             />
+
         <RatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/queue_list_item_ratingBar"
             style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clickable="false"/>
     </LinearLayout>
 

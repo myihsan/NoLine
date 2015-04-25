@@ -10,12 +10,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 import com.tencent.android.tpush.XGPushConfig;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class QueueDetailFragment extends Fragment {
     public static final String EXTRA_QUEUE_ID =
             "com.l3.android.ccbuptservice.queue_id";
 
+    private ImageView mImageView;
     private TextView mNameTextView;
     private RatingBar mRatingBar;
     private TextView mAddressTextView;
@@ -62,21 +65,18 @@ public class QueueDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_queue_detail, container, false);
 
+        mImageView = (ImageView) view.findViewById(R.id.queue_detail_imageView);
         mNameTextView = (TextView) view.findViewById(R.id.queue_detail_nameTextView);
         mRatingBar = (RatingBar) view.findViewById(R.id.queue_detail_ratingBar);
         mAddressTextView = (TextView) view.findViewById(R.id.queue_detail_address);
         mSubqueueLinearLayout = (LinearLayout) view.findViewById(R.id.subqueue_linearLayout);
 
+        Picasso.with(getActivity()).load(getString(R.string.root_url) + mQueue.getImage())
+                .error(R.drawable.placeholder)
+                .placeholder(R.drawable.placeholder)
+                .into(mImageView);
         mNameTextView.setText(mQueue.getName());
         mRatingBar.setRating(mQueue.getRating());
-
-//        Button queueUpButton = (Button) view.findViewById(R.id.queue_detail_queue_up_button);
-//        queueUpButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new QueueUpTask().execute();
-//            }
-//        });
 
         new GetDetailTask().execute();
 

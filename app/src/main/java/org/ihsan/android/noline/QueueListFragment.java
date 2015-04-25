@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -75,10 +78,15 @@ public class QueueListFragment extends ListFragment {
 
             Queue queue = getItem(position);
 
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.queue_list_item_imageView);
+            Picasso.with(getActivity()).load(getString(R.string.root_url) + queue.getImage())
+                    .error(R.drawable.placeholder)
+                    .placeholder(R.drawable.placeholder)
+                    .into(imageView);
             TextView titleTextView =
                     (TextView) convertView.findViewById(R.id.queue_list_item_nameTextView);
             titleTextView.setText(queue.getName());
-            RatingBar ratingBar= (RatingBar) convertView.findViewById(R.id.queue_list_item_ratingBar);
+            RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.queue_list_item_ratingBar);
             ratingBar.setRating(queue.getRating());
 
             return convertView;
