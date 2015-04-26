@@ -54,11 +54,16 @@ public class DataFetcher {
         return new String(getUrlBytes(urlSpec));
     }
 
-    public ArrayList<Queue> fetchQueue() {
+    public ArrayList<Queue> fetchQueue(double minLat, double maxLat, double minLng, double maxLng) {
         ArrayList<Queue> queues = new ArrayList<Queue>();
 
         String fetchUrl = mContext.getString(R.string.root_url) + "getqueue.php";
-        String url = Uri.parse(fetchUrl).buildUpon().build().toString();
+        String url = Uri.parse(fetchUrl).buildUpon()
+                .appendQueryParameter("minLat", String.valueOf(minLat))
+                .appendQueryParameter("maxLat", String.valueOf(maxLat))
+                .appendQueryParameter("minLng", String.valueOf(minLng))
+                .appendQueryParameter("maxLng", String.valueOf(maxLng))
+                .build().toString();
         Log.d(TAG, url);
         try {
             String jsonString = getUrl(url);
@@ -94,8 +99,8 @@ public class DataFetcher {
             JSONArray subqueueSizes = jsonObject.getJSONArray("subqueueSizes");
             JSONArray subqueueTotals = jsonObject.getJSONArray("subqueueTotals");
             JSONArray subqueueFirstNumbers = jsonObject.getJSONArray("subqueueFirstNumbers");
-            for (int i=0;i<subqueueNames.length();i++){
-                Subqueue subqueue=new Subqueue();
+            for (int i = 0; i < subqueueNames.length(); i++) {
+                Subqueue subqueue = new Subqueue();
                 subqueue.setName(subqueueNames.getString(i));
                 subqueue.setSize(subqueueSizes.getInt(i));
                 subqueue.setTotal(subqueueTotals.getInt(i));
@@ -154,11 +159,11 @@ public class DataFetcher {
         return flag;
     }
 
-    public int fetchQueueUpResult(int queueId,int subqueueNumber, String userId) {
+    public int fetchQueueUpResult(int queueId, int subqueueNumber, String userId) {
         String fetchUrl = mContext.getString(R.string.root_url) + "queueup.php";
         String url = Uri.parse(fetchUrl).buildUpon()
                 .appendQueryParameter("queueId", String.valueOf(queueId))
-                .appendQueryParameter("subqueueNumber",String.valueOf(subqueueNumber))
+                .appendQueryParameter("subqueueNumber", String.valueOf(subqueueNumber))
                 .appendQueryParameter("userId", userId)
                 .build().toString();
         try {

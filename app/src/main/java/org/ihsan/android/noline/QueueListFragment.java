@@ -2,7 +2,10 @@ package org.ihsan.android.noline;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -27,9 +31,28 @@ public class QueueListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         QueueAdapter adapter = new QueueAdapter(QueueArray.get(getActivity()).getQueues());
         setListAdapter(adapter);
-        new FetchQueueTask().execute();
+
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (location != null) {
+            double myLat = location.getLatitude();
+            double myLng = location.getLongitude();
+
+            double range = 180 / Math.PI * 1 / 6372.797;
+            double lngR = range / Math.cos(myLat * Math.PI / 180.0);
+            double minLat = myLat - range;
+            double maxLat = myLat + range;
+            double minLng = myLng - lngR;
+            double maxLng = myLng + lngR;
+
+//            Toast.makeText(getActivity(), minLat + "~" + maxLat + "," + minLng + "~" + maxLng, Toast.LENGTH_SHORT).show();
+            new FetchQueueTask().execute(minLat,maxLat,minLng,maxLng);
+        } else {
+            Toast.makeText(getActivity(),"无法获取位置，请使用搜索",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -51,10 +74,10 @@ public class QueueListFragment extends ListFragment {
         ((QueueAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
-    private class FetchQueueTask extends AsyncTask<Void, Void, ArrayList<Queue>> {
+    private class FetchQueueTask extends AsyncTask<Double, Void, ArrayList<Queue>> {
         @Override
-        protected ArrayList<Queue> doInBackground(Void... params) {
-            return new DataFetcher(getActivity()).fetchQueue();
+        protected ArrayList<Queue> doInBackground(Double... params) {
+            return new DataFetcher(getActivity()).fetchQueue(params[0],params[1],params[2],params[3]);
         }
 
         @Override
