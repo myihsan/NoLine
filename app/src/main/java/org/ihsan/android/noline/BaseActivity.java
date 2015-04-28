@@ -1,12 +1,13 @@
 package org.ihsan.android.noline;
 
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 /**
  * Created by Ihsan on 15/1/21.
  */
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
 
     protected Toolbar mToolbar;
 
