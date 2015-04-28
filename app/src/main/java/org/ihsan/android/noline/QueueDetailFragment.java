@@ -109,19 +109,19 @@ public class QueueDetailFragment extends Fragment {
                     subqueueSizeTextView.setText(String.valueOf(subqueue.getSize()));
                     subqueueTotalTextView.setText(String.valueOf(subqueue.getTotal()));
                     subqueueFirstNumberTextView.setText(String.valueOf(subqueue.getFirstNumber()));
+                    int estimatedTime = subqueue.getEstimatedTime();
                     subqueueView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             new MaterialDialog.Builder(getActivity())
                                     .title("是否加入" + subqueue.getName() + "队列")
-                                    .content("现在还需等待" + subqueue.getTotal() + "位")
+                                    .content("现在还需等待" + subqueue.getTotal() + "位"+subqueue.getEstimatedTimeString())
                                     .positiveText("确定")
                                     .negativeText("取消")
                                     .callback(new MaterialDialog.ButtonCallback() {
                                         @Override
                                         public void onPositive(MaterialDialog dialog) {
                                             new QueueUpTask().execute(subqueues.indexOf(subqueue));
-//                                            super.onPositive(dialog);
                                         }
                                     })
                                     .show();

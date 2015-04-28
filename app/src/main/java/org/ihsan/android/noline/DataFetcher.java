@@ -99,12 +99,14 @@ public class DataFetcher {
             JSONArray subqueueSizes = jsonObject.getJSONArray("subqueueSizes");
             JSONArray subqueueTotals = jsonObject.getJSONArray("subqueueTotals");
             JSONArray subqueueFirstNumbers = jsonObject.getJSONArray("subqueueFirstNumbers");
+            JSONArray subqueueEstimatedTime = jsonObject.getJSONArray("subqueueEstimatedTime");
             for (int i = 0; i < subqueueNames.length(); i++) {
                 Subqueue subqueue = new Subqueue();
                 subqueue.setName(subqueueNames.getString(i));
                 subqueue.setSize(subqueueSizes.getInt(i));
                 subqueue.setTotal(subqueueTotals.getInt(i));
                 subqueue.setFirstNumber(subqueueFirstNumbers.getInt(i));
+                subqueue.setEstimatedTime(subqueueEstimatedTime.getInt(i));
                 subqueues.add(subqueue);
             }
         } catch (IOException ioe) {
