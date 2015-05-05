@@ -1,6 +1,8 @@
 package org.ihsan.android.noline;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +36,8 @@ public class QueueListFragment extends ListFragment {
         QueueAdapter adapter = new QueueAdapter(QueueArray.get(getActivity()).getQueues());
         setListAdapter(adapter);
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService
+                (Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (location != null) {
             double myLat = location.getLatitude();
@@ -48,10 +50,12 @@ public class QueueListFragment extends ListFragment {
             double minLng = myLng - lngR;
             double maxLng = myLng + lngR;
 
-//            Toast.makeText(getActivity(), minLat + "~" + maxLat + "," + minLng + "~" + maxLng, Toast.LENGTH_SHORT).show();
-            new FetchQueueTask().execute(minLat,maxLat,minLng,maxLng);
+//            Toast.makeText(getActivity(), minLat + "~" + maxLat + "," + minLng + "~" + maxLng,
+// Toast.LENGTH_SHORT).show();
+            new FetchQueueTask().execute(minLat, maxLat, minLng, maxLng);
         } else {
-            Toast.makeText(getActivity(),"无法获取位置，请使用搜索",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(),"无法获取位置，请使用搜索",Toast.LENGTH_SHORT).show();
+            new FetchQueueTask().execute(40.074, 40.076, 116.28, 116.3);
         }
     }
 
@@ -66,7 +70,12 @@ public class QueueListFragment extends ListFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            getActivity().finish();
+            FragmentManager fragmentManager = getFragmentManager();
+            Fragment fragment = new QueuedStateFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .commit();
+            ((QueueListActivity) getActivity()).setDrawerSelection(1);
         }
     }
 
@@ -77,7 +86,8 @@ public class QueueListFragment extends ListFragment {
     private class FetchQueueTask extends AsyncTask<Double, Void, ArrayList<Queue>> {
         @Override
         protected ArrayList<Queue> doInBackground(Double... params) {
-            return new DataFetcher(getActivity()).fetchQueue(params[0],params[1],params[2],params[3]);
+            return new DataFetcher(getActivity()).fetchQueue(params[0], params[1], params[2],
+                    params[3]);
         }
 
         @Override
@@ -101,7 +111,8 @@ public class QueueListFragment extends ListFragment {
 
             Queue queue = getItem(position);
 
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.queue_list_item_imageView);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id
+                    .queue_list_item_imageView);
             Picasso.with(getActivity()).load(getString(R.string.root_url) + queue.getImage())
                     .error(R.drawable.placeholder)
                     .placeholder(R.drawable.placeholder)
@@ -109,7 +120,8 @@ public class QueueListFragment extends ListFragment {
             TextView titleTextView =
                     (TextView) convertView.findViewById(R.id.queue_list_item_nameTextView);
             titleTextView.setText(queue.getName());
-            RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.queue_list_item_ratingBar);
+            RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id
+                    .queue_list_item_ratingBar);
             ratingBar.setRating(queue.getRating());
 
             return convertView;

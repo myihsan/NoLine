@@ -9,7 +9,7 @@
     <color name="ripple">@color/md_pink_200</color>
 
     <color name="secondary_text">#727272</color>
-    <color name="icons">#FFFFFF</color>
+    <color name="icons">@color/md_white_1000</color>
     <color name="divider">#B6B6B6</color>
 
     <color name="body_text_1">#de000000</color>

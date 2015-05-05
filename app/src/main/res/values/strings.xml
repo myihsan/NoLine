@@ -3,7 +3,7 @@
     <string name="queue_now_label">当前</string>
     <string name="queue_total_label">排队人数</string>
     <string name="queue_up_button">加入队列</string>
-    <string name="queued_number">queuedNumber</string>
+    <string name="queued_id">queuedId</string>
     <string name="queued_queue">queuedQueue</string>
     <string name="queue_my_number">我的编号</string>
     <string name="queue_identification">识别码</string>

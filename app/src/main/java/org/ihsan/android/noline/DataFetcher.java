@@ -77,7 +77,8 @@ public class DataFetcher {
         return queues;
     }
 
-    private void parseQueues(ArrayList<Queue> queues, String jsonString) throws JSONException, IOException {
+    private void parseQueues(ArrayList<Queue> queues, String jsonString) throws JSONException,
+            IOException {
         JSONArray itemsArray = new JSONArray(jsonString);
         for (int i = 0; i < itemsArray.length(); i++) {
             Queue queue = new Queue(itemsArray.getJSONObject(i));
@@ -119,34 +120,34 @@ public class DataFetcher {
         return subqueues;
     }
 
-    public int fetchNowQueuer(int queueId) {
-        if (queueId != -1) {
+    public QueuedState fetchQueuedState(int queueId, int queuedId) {
+        QueuedState queuedState = null;
+        if (queueId != -1 && queuedId != -1) {
             String result = null;
-            String fetchUrl = mContext.getString(R.string.root_url) + "getnowqueuer.php";
+            String fetchUrl = mContext.getString(R.string.root_url) + "getqueuestate.php";
             String url = Uri.parse(fetchUrl).buildUpon()
                     .appendQueryParameter("queueId", String.valueOf(queueId))
+                    .appendQueryParameter("queuedId", String.valueOf(queuedId))
                     .build().toString();
-            Log.d(TAG, url);
             try {
                 result = getUrl(url);
-                return Integer.valueOf(result);
+                queuedState = new QueuedState(new JSONObject(result));
             } catch (IOException ioe) {
                 Log.e(TAG, "Failed to fetch URL: ", ioe);
-                return -1;
-            } catch (NumberFormatException nfe) {
-                return -1;
+            } catch (JSONException jsone) {
+                Log.e(TAG, "Failed to parse detail", jsone);
             }
+            return queuedState;
         }
-        return -1;
+        return queuedState;
     }
 
-    public boolean fetchQuitQueueResult(int queueId, int number, String token) {
+    public boolean fetchQuitQueueResult(int queuedQueue, int queuedId) {
         boolean flag = false;
         String fetchUrl = mContext.getString(R.string.root_url) + "quitqueue.php";
         String url = Uri.parse(fetchUrl).buildUpon()
-                .appendQueryParameter("queueId", String.valueOf(queueId))
-                .appendQueryParameter("number", String.valueOf(number))
-                .appendQueryParameter("token", token)
+                .appendQueryParameter("queuedQueue", String.valueOf(queuedQueue))
+                .appendQueryParameter("queuedId", String.valueOf(queuedId))
                 .build().toString();
         Log.d(TAG, url);
         try {

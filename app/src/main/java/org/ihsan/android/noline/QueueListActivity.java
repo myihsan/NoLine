@@ -3,9 +3,7 @@ package org.ihsan.android.noline;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +11,6 @@ import android.widget.ImageView;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.tencent.android.tpush.XGIOperateCallback;
@@ -24,6 +21,9 @@ import com.tencent.android.tpush.XGPushManager;
  * Created by Ihsan on 15/2/5.
  */
 public class QueueListActivity extends SingleFragmentActivity {
+
+    private Drawer.Result mDrawerResult;
+
     @Override
     protected Fragment createFragment() {
         return new QueueListFragment();
@@ -56,7 +56,7 @@ public class QueueListActivity extends SingleFragmentActivity {
                 .withHeaderBackgroundScaleType(ImageView.ScaleType.CENTER_CROP)
                 .build();
 
-        Drawer.Result result = new Drawer()
+        mDrawerResult = new Drawer()
                 .withActivity(this)
                 .withToolbar(mToolbar)
                 .withAccountHeader(headerResult)
@@ -80,7 +80,7 @@ public class QueueListActivity extends SingleFragmentActivity {
                                         .commit();
                                 break;
                             case 1:
-                                fragment = new Fragment();
+                                fragment = new QueuedStateFragment();
                                 fragmentManager.beginTransaction()
                                         .replace(R.id.fragmentContainer, fragment)
                                         .commit();
@@ -89,5 +89,9 @@ public class QueueListActivity extends SingleFragmentActivity {
                     }
                 })
                 .build();
+    }
+
+    public void setDrawerSelection(int position){
+        mDrawerResult.setSelection(position);
     }
 }

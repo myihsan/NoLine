@@ -2,7 +2,6 @@ package org.ihsan.android.noline;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -151,7 +150,7 @@ public class QueueDetailFragment extends Fragment {
                 Toast.makeText(getActivity(), "加入成功", Toast.LENGTH_LONG).show();
                 PreferenceManager.getDefaultSharedPreferences(getActivity())
                         .edit()
-                        .putInt(getString(R.string.queued_number), integer)
+                        .putInt(getString(R.string.queued_id), integer)
                         .putInt(getString(R.string.queued_queue), mQueue.getId())
                         .commit();
                 getActivity().setResult(Activity.RESULT_OK);
