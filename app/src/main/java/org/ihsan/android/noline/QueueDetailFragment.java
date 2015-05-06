@@ -139,8 +139,8 @@ public class QueueDetailFragment extends Fragment {
         @Override
         protected Integer doInBackground(Integer... params) {
             int queueId = mQueue.getId();
-            String userId = XGPushConfig.getToken(getActivity());
-            return new DataFetcher(getActivity()).fetchQueueUpResult(queueId, params[0], userId);
+            String token = XGPushConfig.getToken(getActivity());
+            return new DataFetcher(getActivity()).fetchQueueUpResult(queueId, params[0], token);
         }
 
         @Override
