@@ -54,7 +54,8 @@ public class DataFetcher {
         return new String(getUrlBytes(urlSpec));
     }
 
-    public ArrayList<Queue> fetchQueue(double minLat, double maxLat, double minLng, double maxLng) {
+    public ArrayList<Queue> fetchNearQueue(double minLat, double maxLat, double minLng, double
+            maxLng) {
         ArrayList<Queue> queues = new ArrayList<Queue>();
 
         String fetchUrl = mContext.getString(R.string.root_url) + "getqueue.php";
@@ -63,6 +64,26 @@ public class DataFetcher {
                 .appendQueryParameter("maxLat", String.valueOf(maxLat))
                 .appendQueryParameter("minLng", String.valueOf(minLng))
                 .appendQueryParameter("maxLng", String.valueOf(maxLng))
+                .build().toString();
+        Log.d(TAG, url);
+        try {
+            String jsonString = getUrl(url);
+            Log.i(TAG, jsonString);
+            parseQueues(queues, jsonString);
+        } catch (IOException ioe) {
+            Log.e(TAG, "Failed to fetch URL: ", ioe);
+        } catch (JSONException jsone) {
+            Log.e(TAG, "Failed to parse notices", jsone);
+        }
+        return queues;
+    }
+
+    public ArrayList<Queue> fetchQueueByKeyword(String keyword) {
+        ArrayList<Queue> queues = new ArrayList<Queue>();
+
+        String fetchUrl = mContext.getString(R.string.root_url) + "getqueue.php";
+        String url = Uri.parse(fetchUrl).buildUpon()
+                .appendQueryParameter("keyword", keyword)
                 .build().toString();
         Log.d(TAG, url);
         try {

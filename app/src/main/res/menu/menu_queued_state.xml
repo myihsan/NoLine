@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/queued_history"
+        android:id="@+id/action_queued_history"
         android:title="排队历史"
         android:icon="@drawable/ic_history_white_24dp"
         app:showAsAction="always"
         />
     <item
-        android:id="@+id/quit_queue"
+        android:id="@+id/action_quit_queue"
         android:title="退出队列"
         app:showAsAction="never"/>
 </menu>

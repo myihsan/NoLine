@@ -2,7 +2,9 @@ package org.ihsan.android.noline;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -91,7 +93,33 @@ public class QueueListActivity extends SingleFragmentActivity {
                 .build();
     }
 
-    public void setDrawerSelection(int position){
+    public void setDrawerSelection(int position) {
         mDrawerResult.setSelection(position);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (mDrawerResult.getCurrentSelection() == 0) {
+            QueueListFragment fragment = (QueueListFragment) getFragmentManager()
+                    .findFragmentById(R.id.fragmentContainer);
+            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+                String keyword = intent.getStringExtra(SearchManager.QUERY);
+                fragment.searchQueue(keyword);
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerResult.getCurrentSelection() == 0) {
+            QueueListFragment fragment = (QueueListFragment) getFragmentManager()
+                    .findFragmentById(R.id.fragmentContainer);
+            if (!fragment.isSearchViewIconified()){
+                fragment.setSearchViewIconified(true);
+                fragment.setSearchViewIconified(true);
+            }
+        } else {
+            super.onBackPressed();
+        }
     }
 }

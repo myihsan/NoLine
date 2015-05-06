@@ -4,19 +4,28 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ListFragment;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -28,10 +37,12 @@ import java.util.ArrayList;
 public class QueueListFragment extends ListFragment {
     private static final String TAG = "QueueListFragment";
     private static final int QUEUE_DETAIL = 1;
+    private SearchView mSearchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         QueueAdapter adapter = new QueueAdapter(QueueArray.get(getActivity()).getQueues());
         setListAdapter(adapter);
@@ -52,10 +63,10 @@ public class QueueListFragment extends ListFragment {
 
 //            Toast.makeText(getActivity(), minLat + "~" + maxLat + "," + minLng + "~" + maxLng,
 // Toast.LENGTH_SHORT).show();
-            new FetchQueueTask().execute(minLat, maxLat, minLng, maxLng);
+            new FetchNearQueueTask().execute(minLat, maxLat, minLng, maxLng);
         } else {
 //            Toast.makeText(getActivity(),"无法获取位置，请使用搜索",Toast.LENGTH_SHORT).show();
-            new FetchQueueTask().execute(40.074, 40.076, 116.28, 116.3);
+            new FetchNearQueueTask().execute(40.074, 40.076, 116.28, 116.3);
         }
     }
 
@@ -65,6 +76,55 @@ public class QueueListFragment extends ListFragment {
         int queueId = ((QueueAdapter) getListAdapter()).getItem(position).getId();
         intent.putExtra(QueueDetailFragment.EXTRA_QUEUE_ID, queueId);
         startActivityForResult(intent, QUEUE_DETAIL);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_queue_list, menu);
+
+        // Pull out the SearchView
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) searchItem.getActionView();
+
+        // Get the data from our searchable.xml as a SearchableInfo
+        SearchManager searchManager = (SearchManager) getActivity()
+                .getSystemService(Context.SEARCH_SERVICE);
+        ComponentName name = getActivity().getComponentName();
+        SearchableInfo searchInfo = searchManager.getSearchableInfo(name);
+
+        mSearchView.setSearchableInfo(searchInfo);
+        LinearLayout LinearLayout = (LinearLayout) ((LinearLayout) ((LinearLayout) mSearchView
+                .getChildAt(0)).getChildAt(2)).getChildAt(1);
+        SearchView.SearchAutoComplete autoComplete = ((SearchView.SearchAutoComplete) LinearLayout
+                .getChildAt(0));
+        autoComplete.setHintTextColor(getResources().getColor(R.color.md_indigo_100));
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                new FetchNearQueueTask().execute(40.074, 40.076, 116.28, 116.3);
+                return false;
+            }
+        });
+    }
+
+    public boolean isSearchViewIconified(){
+        return mSearchView.isIconified();
+    }
+
+    public void setSearchViewIconified(boolean flag){
+        mSearchView.setIconified(flag);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                getActivity().onSearchRequested();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -83,17 +143,43 @@ public class QueueListFragment extends ListFragment {
         ((QueueAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
-    private class FetchQueueTask extends AsyncTask<Double, Void, ArrayList<Queue>> {
+    public void searchQueue(String keyword) {
+        new FetchQueueTaskByKeyword().execute(keyword);
+    }
+
+    private class FetchNearQueueTask extends AsyncTask<Double, Void, ArrayList<Queue>> {
         @Override
         protected ArrayList<Queue> doInBackground(Double... params) {
-            return new DataFetcher(getActivity()).fetchQueue(params[0], params[1], params[2],
+            return new DataFetcher(getActivity()).fetchNearQueue(params[0], params[1], params[2],
                     params[3]);
         }
 
         @Override
         protected void onPostExecute(ArrayList<Queue> queues) {
-            QueueArray.get(getActivity()).refreshQueues(queues);
-            updateAdapter();
+            if (queues != null) {
+                QueueArray.get(getActivity()).refreshQueues(queues);
+                updateAdapter();
+            } else {
+                Toast.makeText(getActivity(), "获取失败，请重试", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class FetchQueueTaskByKeyword extends AsyncTask<String, Void, ArrayList<Queue>> {
+        @Override
+        protected ArrayList<Queue> doInBackground(String... params) {
+            return new DataFetcher(getActivity()).fetchQueueByKeyword(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Queue> queues) {
+            if (queues != null) {
+                QueueArray.get(getActivity()).refreshQueues(queues);
+                updateAdapter();
+                mSearchView.clearFocus();
+            } else {
+                Toast.makeText(getActivity(), "搜索失败，请重试", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

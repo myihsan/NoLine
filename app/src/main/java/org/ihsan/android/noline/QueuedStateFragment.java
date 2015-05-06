@@ -76,7 +76,7 @@ public class QueuedStateFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.quit_queue) {
+        if (id == R.id.action_quit_queue) {
             SharedPreferences defaultSharedPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getActivity());
             int queuedQueue = defaultSharedPreferences
