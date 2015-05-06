@@ -10,11 +10,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -114,7 +117,7 @@ public class QueueListActivity extends SingleFragmentActivity {
         if (mDrawerResult.getCurrentSelection() == 0) {
             QueueListFragment fragment = (QueueListFragment) getFragmentManager()
                     .findFragmentById(R.id.fragmentContainer);
-            if (!fragment.isSearchViewIconified()){
+            if (!fragment.isSearchViewIconified()) {
                 fragment.setSearchViewIconified(true);
                 fragment.setSearchViewIconified(true);
             }
