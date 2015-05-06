@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -62,6 +64,7 @@ public class QueueDetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_queue_detail, container, false);
 
         mImageView = (ImageView) view.findViewById(R.id.queue_detail_imageView);
@@ -80,6 +83,19 @@ public class QueueDetailFragment extends Fragment {
         new GetDetailTask().execute();
 
         return view;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (NavUtils.getParentActivityName(getActivity()) != null) {
+                    NavUtils.navigateUpFromSameTask(getActivity());
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private class GetDetailTask extends AsyncTask<Void, Void, ArrayList<Subqueue>> {
@@ -140,7 +156,9 @@ public class QueueDetailFragment extends Fragment {
         protected Integer doInBackground(Integer... params) {
             int queueId = mQueue.getId();
             String token = XGPushConfig.getToken(getActivity());
-            return new DataFetcher(getActivity()).fetchQueueUpResult(queueId, params[0], token);
+            int userId = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                    .getInt(getString(R.string.logged_user_id), -1);
+            return new DataFetcher(getActivity()).fetchQueueUpResult(queueId, params[0], token,userId);
         }
 
         @Override
