@@ -9,5 +9,6 @@
     <string name="queue_identification">识别码</string>
     <string name="quit_queue">退出队列</string>
     <string name="search_hint">输入商户名</string>
+    <string name="logged_user_id">loggedUserId</string>
 
 </resources>

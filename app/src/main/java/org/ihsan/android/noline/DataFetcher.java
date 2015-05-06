@@ -73,7 +73,7 @@ public class DataFetcher {
         } catch (IOException ioe) {
             Log.e(TAG, "Failed to fetch URL: ", ioe);
         } catch (JSONException jsone) {
-            Log.e(TAG, "Failed to parse notices", jsone);
+            Log.e(TAG, "Failed to parse result", jsone);
         }
         return queues;
     }
@@ -93,7 +93,7 @@ public class DataFetcher {
         } catch (IOException ioe) {
             Log.e(TAG, "Failed to fetch URL: ", ioe);
         } catch (JSONException jsone) {
-            Log.e(TAG, "Failed to parse notices", jsone);
+            Log.e(TAG, "Failed to parse result", jsone);
         }
         return queues;
     }
@@ -135,7 +135,7 @@ public class DataFetcher {
             Log.e(TAG, "Failed to fetch URL: ", ioe);
             return null;
         } catch (JSONException jsone) {
-            Log.e(TAG, "Failed to parse detail", jsone);
+            Log.e(TAG, "Failed to parse result", jsone);
             return null;
         }
         return subqueues;
@@ -156,7 +156,7 @@ public class DataFetcher {
             } catch (IOException ioe) {
                 Log.e(TAG, "Failed to fetch URL: ", ioe);
             } catch (JSONException jsone) {
-                Log.e(TAG, "Failed to parse detail", jsone);
+                Log.e(TAG, "Failed to parse result", jsone);
             }
             return queuedState;
         }
@@ -183,12 +183,13 @@ public class DataFetcher {
         return flag;
     }
 
-    public int fetchQueueUpResult(int queueId, int subqueueNumber, String token) {
+    public int fetchQueueUpResult(int queueId, int subqueueNumber, String token,int userId) {
         String fetchUrl = mContext.getString(R.string.root_url) + "queueup.php";
         String url = Uri.parse(fetchUrl).buildUpon()
                 .appendQueryParameter("queueId", String.valueOf(queueId))
                 .appendQueryParameter("subqueueNumber", String.valueOf(subqueueNumber))
                 .appendQueryParameter("token", token)
+                .appendQueryParameter("userId", String.valueOf(userId))
                 .build().toString();
         try {
             String result = getUrl(url);
@@ -200,5 +201,30 @@ public class DataFetcher {
             return -1;
         }
         return -1;
+    }
+
+    public int fetchLoginResult(String username, String password) {
+        int queueId=-1;
+        String loginUrl = mContext.getString(R.string.root_url) + "login.php";
+        String url = Uri.parse(loginUrl).buildUpon()
+                .appendQueryParameter("username", username)
+                .appendQueryParameter("password", password)
+                .appendQueryParameter("identity", "user")
+                .build().toString();
+        Log.d(TAG, url);
+
+        String jsonString;
+        try {
+            jsonString = getUrl(url);
+            JSONObject jsonObject = new JSONObject(jsonString);
+            queueId = jsonObject.getInt("queueId");
+        } catch (IOException ioe) {
+            Log.e(TAG, "Failed to fetch URL: ", ioe);
+            return -2;
+        } catch (JSONException jsone) {
+            Log.e(TAG, "Failed to parse result", jsone);
+        }
+        Log.d(TAG, queueId+"");
+        return queueId;
     }
 }

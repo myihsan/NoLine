@@ -2,6 +2,7 @@ package org.ihsan.android.noline;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -75,22 +76,26 @@ public class QueuedStateFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_quit_queue) {
-            SharedPreferences defaultSharedPreferences = PreferenceManager
-                    .getDefaultSharedPreferences(getActivity());
-            int queuedQueue = defaultSharedPreferences
-                    .getInt(getString(R.string.queued_queue), -1);
-            int queuedId = defaultSharedPreferences
-                    .getInt(getString(R.string.queued_id), -1);
-            if (queuedQueue!=-1&&queuedId!=-1) {
-                new QuitQueueTask().execute(queuedQueue,queuedId);
-            } else {
-                Toast.makeText(getActivity(),"尚未加入队列，无法退出",Toast.LENGTH_SHORT).show();
-            }
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_quit_queue:
+                SharedPreferences defaultSharedPreferences = PreferenceManager
+                        .getDefaultSharedPreferences(getActivity());
+                int queuedQueue = defaultSharedPreferences
+                        .getInt(getString(R.string.queued_queue), -1);
+                int queuedId = defaultSharedPreferences
+                        .getInt(getString(R.string.queued_id), -1);
+                if (queuedQueue!=-1&&queuedId!=-1) {
+                    new QuitQueueTask().execute(queuedQueue,queuedId);
+                } else {
+                    Toast.makeText(getActivity(),"尚未加入队列，无法退出",Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.action_queued_history:
+                Intent intent = new Intent(getActivity(),QueuedHistoryActivity.class);
+                startActivity(intent);
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

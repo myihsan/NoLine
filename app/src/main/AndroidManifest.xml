@@ -50,6 +50,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".QueueListActivity"/>
         </activity>
+        <activity
+            android:name=".QueuedHistoryActivity"
+            android:label="排队历史"
+            android:parentActivityName=".QueueListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".QueueListActivity"/>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:parentActivityName=".QueuedHistoryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".QueuedHistoryActivity"/>
+        </activity>
 
         <activity
             android:name="com.tencent.android.tpush.XGPushActivity"
