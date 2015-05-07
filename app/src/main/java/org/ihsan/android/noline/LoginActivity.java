@@ -2,13 +2,9 @@ package org.ihsan.android.noline;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,11 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 
 public class LoginActivity extends BaseActivity {
@@ -167,19 +158,19 @@ public class LoginActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(Integer queueId) {
+        protected void onPostExecute(Integer userId) {
             mAuthTask = null;
             showProgress(false);
 
-            if (queueId == -2) {
+            if (userId == -2) {
                 Toast.makeText(LoginActivity.this, "网络连接失败，无法登录", Toast.LENGTH_LONG).show();
                 return;
-            } else if (queueId != -1) {
+            } else if (userId != -1) {
                 PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
                         .edit()
-                        .putInt(getString(R.string.logged_user_id), queueId)
+                        .putInt(getString(R.string.logined_user_id), userId)
                         .commit();
-                Log.d(TAG, "queueId: " + queueId);
+                Log.d(TAG, "userId: " + userId);
 
                 setResult(RESULT_OK);
                 finish();
