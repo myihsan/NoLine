@@ -35,6 +35,7 @@ public class FavoriteQueueFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
+        getActivity().setTitle("我的收藏");
         View view=inflater.inflate(R.layout.fragment_favorite_queue,container,false);
 
         mButton = (Button) view.findViewById(R.id.button);

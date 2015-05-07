@@ -63,6 +63,7 @@ public class QueueDetailFragment extends Fragment {
         }
         if (queueId != -1) {
             mQueue = QueueArray.get(getActivity()).getQueue(queueId);
+            getActivity().setTitle(mQueue.getName());
         }
     }
 

@@ -54,6 +54,7 @@ public class QueuedStateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
+        getActivity().setTitle("排队记录");
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_queue_state, container, false);
         mLinearLayout = (LinearLayout) view.findViewById(R.id.queued_state_linearLayout);

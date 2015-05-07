@@ -42,6 +42,7 @@ public class QueueListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle("附近商户");
         setHasOptionsMenu(true);
 
         QueueAdapter adapter = new QueueAdapter(QueueArray.get(getActivity()).getQueues());
