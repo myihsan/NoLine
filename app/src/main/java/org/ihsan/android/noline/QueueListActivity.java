@@ -73,6 +73,8 @@ public class QueueListActivity extends SingleFragmentActivity {
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("我要排队").withIcon(R.drawable
                                 .ic_format_list_numbered_grey600_24dp),
+                        new PrimaryDrawerItem().withName("我的收藏").withIcon(R.drawable
+                                .ic_favorite_grey600_24dp),
                         new PrimaryDrawerItem().withName("排队记录").withIcon(R.drawable
                                 .ic_history_grey600_24dp),
                         new DividerDrawerItem(),
@@ -88,7 +90,7 @@ public class QueueListActivity extends SingleFragmentActivity {
                 .getDefaultSharedPreferences(this)
                 .getInt(getString(R.string.logined_user_id), -1);
         if (userId != -1) {
-            ((SecondaryDrawerItem)mDrawerResult.getDrawerItems().get(3)).setName("注销");
+            ((SecondaryDrawerItem) mDrawerResult.getDrawerItems().get(4)).setName("注销");
             mDrawerResult.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long
@@ -104,12 +106,18 @@ public class QueueListActivity extends SingleFragmentActivity {
                                     .commit();
                             break;
                         case 1:
+                            fragment = new FavoriteQueueFragment();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainer, fragment)
+                                    .commit();
+                            break;
+                        case 2:
                             fragment = new QueuedStateFragment();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainer, fragment)
                                     .commit();
                             break;
-                        case 3:
+                        case 4:
                             PreferenceManager.getDefaultSharedPreferences(QueueListActivity.this)
                                     .edit()
                                     .remove(getString(R.string.logined_user_id))
@@ -121,7 +129,7 @@ public class QueueListActivity extends SingleFragmentActivity {
                 }
             });
         } else {
-            ((SecondaryDrawerItem)mDrawerResult.getDrawerItems().get(3)).setName("登录");
+            ((SecondaryDrawerItem) mDrawerResult.getDrawerItems().get(4)).setName("登录");
             mDrawerResult.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long
@@ -137,12 +145,18 @@ public class QueueListActivity extends SingleFragmentActivity {
                                     .commit();
                             break;
                         case 1:
+                            fragment = new FavoriteQueueFragment();
+                            fragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainer, fragment)
+                                    .commit();
+                            break;
+                        case 2:
                             fragment = new QueuedStateFragment();
                             fragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainer, fragment)
                                     .commit();
                             break;
-                        case 3:
+                        case 4:
                             Intent intent = new Intent(QueueListActivity.this, LoginActivity.class);
                             startActivityForResult(intent, LOGIN);
                             break;

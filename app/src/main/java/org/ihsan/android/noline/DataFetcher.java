@@ -98,6 +98,26 @@ public class DataFetcher {
         return queues;
     }
 
+    public ArrayList<Queue> fetchFavoriteQueue(int userId) {
+        ArrayList<Queue> queues = new ArrayList<Queue>();
+
+        String fetchUrl = mContext.getString(R.string.root_url) + "getqueue.php";
+        String url = Uri.parse(fetchUrl).buildUpon()
+                .appendQueryParameter("userId", String.valueOf(userId))
+                .build().toString();
+        Log.d(TAG, url);
+        try {
+            String jsonString = getUrl(url);
+            Log.i(TAG, jsonString);
+            parseQueues(queues, jsonString);
+        } catch (IOException ioe) {
+            Log.e(TAG, "Failed to fetch URL: ", ioe);
+        } catch (JSONException jsone) {
+            Log.e(TAG, "Failed to parse result", jsone);
+        }
+        return queues;
+    }
+
     private void parseQueues(ArrayList<Queue> queues, String jsonString) throws JSONException,
             IOException {
         JSONArray itemsArray = new JSONArray(jsonString);
@@ -183,7 +203,7 @@ public class DataFetcher {
         return flag;
     }
 
-    public int fetchQueueUpResult(int queueId, int subqueueNumber, String token,int userId) {
+    public int fetchQueueUpResult(int queueId, int subqueueNumber, String token, int userId) {
         String fetchUrl = mContext.getString(R.string.root_url) + "queueup.php";
         String url = Uri.parse(fetchUrl).buildUpon()
                 .appendQueryParameter("queueId", String.valueOf(queueId))
@@ -203,8 +223,29 @@ public class DataFetcher {
         return -1;
     }
 
+    public int fetchIsFavorite(int userId, int queueId) {
+        int flag = -1;
+        String fetchUrl = mContext.getString(R.string.root_url) + "isfavorite.php";
+        String url = Uri.parse(fetchUrl).buildUpon()
+                .appendQueryParameter("userId", String.valueOf(userId))
+                .appendQueryParameter("queueId", String.valueOf(queueId))
+                .build().toString();
+        try {
+            String result = getUrl(url);
+            Log.d(TAG, result);
+            if (result.equals("true")) {
+                flag = 1;
+            } else {
+                flag = 0;
+            }
+        } catch (IOException ioe) {
+            Log.e(TAG, "Failed to fetch URL: ", ioe);
+        }
+        return flag;
+    }
+
     public int fetchLoginResult(String username, String password) {
-        int queueId=-1;
+        int queueId = -1;
         String loginUrl = mContext.getString(R.string.root_url) + "login.php";
         String url = Uri.parse(loginUrl).buildUpon()
                 .appendQueryParameter("username", username)
@@ -224,7 +265,7 @@ public class DataFetcher {
         } catch (JSONException jsone) {
             Log.e(TAG, "Failed to parse result", jsone);
         }
-        Log.d(TAG, queueId+"");
+        Log.d(TAG, queueId + "");
         return queueId;
     }
 
@@ -250,5 +291,26 @@ public class DataFetcher {
             return null;
         }
         return queueds;
+    }
+
+    public boolean fetchIsToggleFavoriteResult(int userId, int queueId, boolean isFavorite) {
+        boolean flag = false;
+        String fetchUrl = mContext.getString(R.string.root_url) + "togglefavorite.php";
+        String url = Uri.parse(fetchUrl).buildUpon()
+                .appendQueryParameter("userId", String.valueOf(userId))
+                .appendQueryParameter("queueId", String.valueOf(queueId))
+                .appendQueryParameter("isFavorite", String.valueOf(isFavorite))
+                .build().toString();
+                Log.d(TAG, url);
+        try {
+            String result = getUrl(url);
+            Log.d(TAG, result);
+            if (result.equals("succeed")) {
+                flag = true;
+            }
+        } catch (IOException ioe) {
+            Log.e(TAG, "Failed to fetch URL: ", ioe);
+        }
+        return flag;
     }
 }
