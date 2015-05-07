@@ -57,21 +57,20 @@ public class QueuedHistoryFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         mListView = getListView();
+        QueuedAdapter adapter = new QueuedAdapter(mQueueds);
+        setListAdapter(adapter);
 
         int userId = PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getInt(getString(R.string.logined_user_id), -1);
         if (userId == -1) {
             mListView.setVisibility(View.INVISIBLE);
         } else {
-            mListView.setVisibility(View.VISIBLE);
             mButton.setVisibility(View.INVISIBLE);
             loadQueued();
         }
     }
 
     private void loadQueued(){
-        QueuedAdapter adapter = new QueuedAdapter(mQueueds);
-        setListAdapter(adapter);
         new FetchQueuedTask().execute();
     }
 
