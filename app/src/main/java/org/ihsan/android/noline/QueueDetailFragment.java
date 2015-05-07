@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class QueueDetailFragment extends Fragment {
     public static final String TAG = "QueueDetailFragment";
     public static final String EXTRA_QUEUE_ID =
-            "com.l3.android.ccbuptservice.queue_id";
+            "org.ihsan.android.noline.queue_id";
 
     private ImageView mImageView;
     private TextView mNameTextView;
@@ -157,7 +157,7 @@ public class QueueDetailFragment extends Fragment {
             int queueId = mQueue.getId();
             String token = XGPushConfig.getToken(getActivity());
             int userId = PreferenceManager.getDefaultSharedPreferences(getActivity())
-                    .getInt(getString(R.string.logged_user_id), -1);
+                    .getInt(getString(R.string.logined_user_id), -1);
             return new DataFetcher(getActivity()).fetchQueueUpResult(queueId, params[0], token,userId);
         }
 

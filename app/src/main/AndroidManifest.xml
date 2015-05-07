@@ -59,7 +59,10 @@
                 android:value=".QueueListActivity"/>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginActivity">
+        </activity>
+        <activity
+            android:name=".QueuedStateActivity"
             android:parentActivityName=".QueuedHistoryActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

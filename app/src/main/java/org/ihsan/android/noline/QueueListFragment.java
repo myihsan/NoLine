@@ -204,7 +204,7 @@ public class QueueListFragment extends ListFragment {
                     .placeholder(R.drawable.placeholder)
                     .into(imageView);
             TextView titleTextView =
-                    (TextView) convertView.findViewById(R.id.queue_list_item_nameTextView);
+                    (TextView) convertView.findViewById(R.id.queue_list_item_name_textView);
             titleTextView.setText(queue.getName());
             RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id
                     .queue_list_item_ratingBar);

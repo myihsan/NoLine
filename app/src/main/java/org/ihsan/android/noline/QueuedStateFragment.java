@@ -23,6 +23,11 @@ import android.widget.Toast;
  */
 public class QueuedStateFragment extends Fragment {
 
+    public static final String EXTRA_QUEUED_QUEUE = "org.ihsan.android.noline.queueQueue";
+    public static final String EXTRA_QUEUED_ID = "org.ihsan.android.noline.queued_id";
+
+    private boolean mHasArguments = false;
+
     private LinearLayout mLinearLayout;
     private TextView mWarnTextView;
     private TextView mNumberTextView;
@@ -33,6 +38,17 @@ public class QueuedStateFragment extends Fragment {
     private TextView mEstimatedTimeTextView;
     private TextView stateTextView;
     private Activity mActivity;
+
+    public static QueuedStateFragment newInstance(int queuedQueue, int queuedId) {
+        Bundle args = new Bundle();
+        args.putInt(EXTRA_QUEUED_QUEUE, queuedQueue);
+        args.putInt(EXTRA_QUEUED_ID, queuedId);
+
+        QueuedStateFragment fragment = new QueuedStateFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -52,17 +68,28 @@ public class QueuedStateFragment extends Fragment {
                 .queue_state_estimated_time_textView);
         stateTextView = (TextView) view.findViewById(R.id.queue_state_state_textView);
 
-        SharedPreferences defaultSharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(getActivity());
-        int queuedQueue = defaultSharedPreferences
-                .getInt(getString(R.string.queued_queue), -1);
-        int queuedId = defaultSharedPreferences
-                .getInt(getString(R.string.queued_id), -1);
-        if (queuedQueue != -1 && queuedId != -1) {
+        Bundle arguments = getArguments();
+        int queuedQueue;
+        int queuedId;
+        if (arguments != null) {
+            mHasArguments = true;
+            queuedQueue = getArguments().getInt(EXTRA_QUEUED_QUEUE);
+            queuedId = getArguments().getInt(EXTRA_QUEUED_ID);
             mWarnTextView.setVisibility(View.INVISIBLE);
-            new GetQueuedStateTask().execute(queuedQueue,queuedId);
+            new GetQueuedStateTask().execute(queuedQueue, queuedId);
         } else {
-            mLinearLayout.setVisibility(View.INVISIBLE);
+            SharedPreferences defaultSharedPreferences = PreferenceManager
+                    .getDefaultSharedPreferences(getActivity());
+            queuedQueue = defaultSharedPreferences
+                    .getInt(getString(R.string.queued_queue), -1);
+            queuedId = defaultSharedPreferences
+                    .getInt(getString(R.string.queued_id), -1);
+            if (queuedQueue != -1 && queuedId != -1) {
+                mWarnTextView.setVisibility(View.INVISIBLE);
+                new GetQueuedStateTask().execute(queuedQueue, queuedId);
+            } else {
+                mLinearLayout.setVisibility(View.INVISIBLE);
+            }
         }
 
         return view;
@@ -71,12 +98,14 @@ public class QueuedStateFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_queued_state, menu);
+        if (!mHasArguments) {
+            inflater.inflate(R.menu.menu_queued_state, menu);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_quit_queue:
                 SharedPreferences defaultSharedPreferences = PreferenceManager
                         .getDefaultSharedPreferences(getActivity());
@@ -84,14 +113,14 @@ public class QueuedStateFragment extends Fragment {
                         .getInt(getString(R.string.queued_queue), -1);
                 int queuedId = defaultSharedPreferences
                         .getInt(getString(R.string.queued_id), -1);
-                if (queuedQueue!=-1&&queuedId!=-1) {
-                    new QuitQueueTask().execute(queuedQueue,queuedId);
+                if (queuedQueue != -1 && queuedId != -1) {
+                    new QuitQueueTask().execute(queuedQueue, queuedId);
                 } else {
-                    Toast.makeText(getActivity(),"尚未加入队列，无法退出",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "尚未加入队列，无法退出", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case R.id.action_queued_history:
-                Intent intent = new Intent(getActivity(),QueuedHistoryActivity.class);
+                Intent intent = new Intent(getActivity(), QueuedHistoryActivity.class);
                 startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);

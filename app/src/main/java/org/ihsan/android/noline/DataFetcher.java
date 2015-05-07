@@ -145,7 +145,7 @@ public class DataFetcher {
         QueuedState queuedState = null;
         if (queueId != -1 && queuedId != -1) {
             String result = null;
-            String fetchUrl = mContext.getString(R.string.root_url) + "getqueuestate.php";
+            String fetchUrl = mContext.getString(R.string.root_url) + "getqueuedstate.php";
             String url = Uri.parse(fetchUrl).buildUpon()
                     .appendQueryParameter("queueId", String.valueOf(queueId))
                     .appendQueryParameter("queuedId", String.valueOf(queuedId))
@@ -226,5 +226,29 @@ public class DataFetcher {
         }
         Log.d(TAG, queueId+"");
         return queueId;
+    }
+
+    public ArrayList<Queued> fetchQueued(int userId) {
+        String fetchUrl = mContext.getString(R.string.root_url) + "getqueuedhistory.php";
+        String url = Uri.parse(fetchUrl).buildUpon()
+                .appendQueryParameter("userId", String.valueOf(userId))
+                .build().toString();
+        ArrayList<Queued> queueds = new ArrayList<Queued>();
+        try {
+            String result = getUrl(url);
+            Log.d(TAG, result);
+            JSONArray jsonArray = new JSONArray(result);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Queued queued = new Queued(jsonArray.getJSONObject(i));
+                queueds.add(queued);
+            }
+        } catch (IOException ioe) {
+            Log.e(TAG, "Failed to fetch URL: ", ioe);
+            return null;
+        } catch (JSONException jsone) {
+            Log.e(TAG, "Failed to parse result", jsone);
+            return null;
+        }
+        return queueds;
     }
 }
