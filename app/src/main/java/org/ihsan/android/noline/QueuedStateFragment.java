@@ -77,7 +77,7 @@ public class QueuedStateFragment extends Fragment {
             queuedQueue = getArguments().getInt(EXTRA_QUEUED_QUEUE);
             queuedId = getArguments().getInt(EXTRA_QUEUED_ID);
             mWarnTextView.setVisibility(View.INVISIBLE);
-            new GetQueuedStateTask().execute(queuedQueue, queuedId);
+            new GetQueuedStateTask().execute(queuedQueue, queuedId, 1);
         } else {
             SharedPreferences defaultSharedPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getActivity());
@@ -87,7 +87,7 @@ public class QueuedStateFragment extends Fragment {
                     .getInt(getString(R.string.queued_id), -1);
             if (queuedQueue != -1 && queuedId != -1) {
                 mWarnTextView.setVisibility(View.INVISIBLE);
-                new GetQueuedStateTask().execute(queuedQueue, queuedId);
+                new GetQueuedStateTask().execute(queuedQueue, queuedId, 0);
             } else {
                 mLinearLayout.setVisibility(View.INVISIBLE);
             }
@@ -137,7 +137,8 @@ public class QueuedStateFragment extends Fragment {
     private class GetQueuedStateTask extends AsyncTask<Integer, Void, QueuedState> {
         @Override
         protected QueuedState doInBackground(Integer... params) {
-            return new DataFetcher(mActivity).fetchQueuedState(params[0], params[1]);
+            return new DataFetcher(mActivity).fetchQueuedState(params[0], params[1], params[2] ==
+                    1);
         }
 
 

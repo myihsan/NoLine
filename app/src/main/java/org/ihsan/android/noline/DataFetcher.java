@@ -2,6 +2,7 @@ package org.ihsan.android.noline;
 
 import android.content.Context;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -161,7 +162,7 @@ public class DataFetcher {
         return subqueues;
     }
 
-    public QueuedState fetchQueuedState(int queueId, int queuedId) {
+    public QueuedState fetchQueuedState(int queueId, int queuedId, boolean isHistory) {
         QueuedState queuedState = null;
         if (queueId != -1 && queuedId != -1) {
             String result = null;
@@ -171,14 +172,28 @@ public class DataFetcher {
                     .appendQueryParameter("queuedId", String.valueOf(queuedId))
                     .build().toString();
             try {
-                result = getUrl(url);
-                queuedState = new QueuedState(new JSONObject(result));
-            } catch (IOException ioe) {
-                Log.e(TAG, "Failed to fetch URL: ", ioe);
+                try {
+                    result = getUrl(url);
+                    if (!isHistory) {
+                        PreferenceManager.getDefaultSharedPreferences(mContext)
+                                .edit()
+                                .putString(mContext.getString(R.string.queued_state), result)
+                                .commit();
+                    }
+                    queuedState = new QueuedState(new JSONObject(result));
+                } catch (IOException ioe) {
+                    Log.e(TAG, "Failed to fetch URL: ", ioe);
+                    if (!isHistory) {
+                        result = PreferenceManager.getDefaultSharedPreferences(mContext)
+                                .getString(mContext.getString(R.string.queued_state), null);
+                    }
+                    if (result != null) {
+                        queuedState = new QueuedState(new JSONObject(result));
+                    }
+                }
             } catch (JSONException jsone) {
                 Log.e(TAG, "Failed to parse result", jsone);
             }
-            return queuedState;
         }
         return queuedState;
     }
@@ -301,7 +316,7 @@ public class DataFetcher {
                 .appendQueryParameter("queueId", String.valueOf(queueId))
                 .appendQueryParameter("isFavorite", String.valueOf(isFavorite))
                 .build().toString();
-                Log.d(TAG, url);
+        Log.d(TAG, url);
         try {
             String result = getUrl(url);
             Log.d(TAG, result);
