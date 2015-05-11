@@ -35,6 +35,7 @@ public class QueuedStateFragment extends Fragment {
     private TextView mSubqueueNameTextView;
     private TextView mInTimeTextView;
     private TextView mOutTimeTextView;
+    private TextView mTokenTextView;
     private TextView mEstimatedTimeTextView;
     private TextView stateTextView;
     private Activity mActivity;
@@ -59,15 +60,16 @@ public class QueuedStateFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_queue_state, container, false);
         mLinearLayout = (LinearLayout) view.findViewById(R.id.queued_state_linearLayout);
         mWarnTextView = (TextView) view.findViewById(R.id.queued_state_warn);
-        mNumberTextView = (TextView) view.findViewById(R.id.queue_state_number_textView);
-        mQueueNameTextView = (TextView) view.findViewById(R.id.queue_state_queue_name_textView);
+        mNumberTextView = (TextView) view.findViewById(R.id.queued_state_number_textView);
+        mQueueNameTextView = (TextView) view.findViewById(R.id.queued_state_queue_name_textView);
         mSubqueueNameTextView = (TextView) view.findViewById(R.id
-                .queue_state_subqueue_name_textView);
-        mInTimeTextView = (TextView) view.findViewById(R.id.queue_state_in_time_textView);
-        mOutTimeTextView = (TextView) view.findViewById(R.id.queue_state_out_time_textView);
+                .queued_state_subqueue_name_textView);
+        mInTimeTextView = (TextView) view.findViewById(R.id.queued_state_in_time_textView);
+        mOutTimeTextView = (TextView) view.findViewById(R.id.queued_state_out_time_textView);
+        mTokenTextView = (TextView) view.findViewById(R.id.queued_state_token_textView);
         mEstimatedTimeTextView = (TextView) view.findViewById(R.id
-                .queue_state_estimated_time_textView);
-        stateTextView = (TextView) view.findViewById(R.id.queue_state_state_textView);
+                .queued_state_estimated_time_textView);
+        stateTextView = (TextView) view.findViewById(R.id.queued_state_state_textView);
 
         Bundle arguments = getArguments();
         int queuedQueue;
@@ -153,6 +155,7 @@ public class QueuedStateFragment extends Fragment {
                 mSubqueueNameTextView.setText(queuedState.getSubqueueName());
                 mInTimeTextView.setText(queuedState.getInTime());
                 mOutTimeTextView.setText(queuedState.getOutTime());
+                mTokenTextView.setText(queuedState.getToken());
                 mEstimatedTimeTextView.setText(queuedState.getEstimatedTimeString());
                 stateTextView.setText(queuedState.getState());
             } else {

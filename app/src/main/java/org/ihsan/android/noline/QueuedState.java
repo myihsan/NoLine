@@ -12,6 +12,7 @@ public class QueuedState {
     private String mSubqueueName;
     private String mInTime;
     private String mOutTime;
+    private String mToken;
     private int mEstimatedTime;
     private String state;
     private boolean isFresh;
@@ -22,6 +23,7 @@ public class QueuedState {
         mSubqueueName = jsonQueue.getString("subqueueName");
         mInTime = jsonQueue.getString("inTime");
         mOutTime = jsonQueue.getString("outTime");
+        mToken = jsonQueue.getString("token");
         String estimatedTime = jsonQueue.getString("estimatedTime");
         if (estimatedTime != "null") {
             mEstimatedTime = Integer.valueOf(estimatedTime);
@@ -69,6 +71,14 @@ public class QueuedState {
 
     public void setOutTime(String outTime) {
         mOutTime = outTime;
+    }
+
+    public String getToken() {
+        return mToken;
+    }
+
+    public void setToken(String token) {
+        mToken = token;
     }
 
     public int getEstimatedTime() {
