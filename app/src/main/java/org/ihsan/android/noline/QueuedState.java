@@ -14,6 +14,7 @@ public class QueuedState {
     private String mOutTime;
     private int mEstimatedTime;
     private String state;
+    private boolean isFresh;
 
     public QueuedState(JSONObject jsonQueue) throws JSONException {
         mNumber = Integer.valueOf(jsonQueue.getString("number"));
@@ -84,6 +85,14 @@ public class QueuedState {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public boolean isFresh() {
+        return isFresh;
+    }
+
+    public void setIsFresh(boolean isFresh) {
+        this.isFresh = isFresh;
     }
 
     public String getEstimatedTimeString() {

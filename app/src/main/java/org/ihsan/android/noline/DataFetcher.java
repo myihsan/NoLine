@@ -181,6 +181,7 @@ public class DataFetcher {
                                 .commit();
                     }
                     queuedState = new QueuedState(new JSONObject(result));
+                    queuedState.setIsFresh(true);
                 } catch (IOException ioe) {
                     Log.e(TAG, "Failed to fetch URL: ", ioe);
                     if (!isHistory) {

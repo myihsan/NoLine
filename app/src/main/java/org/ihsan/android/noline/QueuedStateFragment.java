@@ -145,6 +145,9 @@ public class QueuedStateFragment extends Fragment {
         @Override
         protected void onPostExecute(QueuedState queuedState) {
             if (queuedState != null) {
+                if (!queuedState.isFresh()) {
+                    Toast.makeText(mActivity, "服务器连接故障，更新信息失败", Toast.LENGTH_LONG).show();
+                }
                 mNumberTextView.setText(String.valueOf(queuedState.getNumber()));
                 mQueueNameTextView.setText(queuedState.getQueueName());
                 mSubqueueNameTextView.setText(queuedState.getSubqueueName());
