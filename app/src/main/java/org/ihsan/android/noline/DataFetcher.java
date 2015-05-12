@@ -36,7 +36,7 @@ public class DataFetcher {
             InputStream in = connection.getInputStream();
 
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                return null;
+                throw new IOException();
             }
 
             int bytesRead = 0;
@@ -52,7 +52,7 @@ public class DataFetcher {
     }
 
     public String getUrl(String urlSpec) throws IOException {
-        return new String(getUrlBytes(urlSpec));
+            return new String(getUrlBytes(urlSpec));
     }
 
     public ArrayList<Queue> fetchNearQueue(double minLat, double maxLat, double minLng, double
