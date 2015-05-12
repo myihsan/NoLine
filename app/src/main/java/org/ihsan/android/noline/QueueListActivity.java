@@ -72,11 +72,11 @@ public class QueueListActivity extends SingleFragmentActivity {
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("我要排队").withIcon(R.drawable
-                                .ic_format_list_numbered_grey600_24dp),
+                                .ic_format_list_numbered_grey600_24dp).withIconTinted(true),
                         new PrimaryDrawerItem().withName("我的收藏").withIcon(R.drawable
-                                .ic_favorite_grey600_24dp),
+                                .ic_favorite_grey600_24dp).withIconTinted(true),
                         new PrimaryDrawerItem().withName("排队记录").withIcon(R.drawable
-                                .ic_history_grey600_24dp),
+                                .ic_history_grey600_24dp).withIconTinted(true),
                         new DividerDrawerItem(),
                         new SecondaryDrawerItem().withCheckable(false)
                 )
