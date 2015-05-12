@@ -104,9 +104,16 @@ public class QueueListFragment extends ListFragment {
         SearchView.SearchAutoComplete autoComplete = ((SearchView.SearchAutoComplete) LinearLayout
                 .getChildAt(0));
         autoComplete.setHintTextColor(getResources().getColor(R.color.md_indigo_100));
+        mSearchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((QueueListActivity)getActivity()).showTheBackArrow(true);
+            }
+        });
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+                ((QueueListActivity)getActivity()).showTheBackArrow(false);
                 getNearQueue();
                 return false;
             }
@@ -119,17 +126,6 @@ public class QueueListFragment extends ListFragment {
 
     public void setSearchViewIconified(boolean flag){
         mSearchView.setIconified(flag);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                getActivity().onSearchRequested();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override

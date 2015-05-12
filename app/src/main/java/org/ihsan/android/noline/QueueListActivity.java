@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -81,8 +82,36 @@ public class QueueListActivity extends SingleFragmentActivity {
                         new SecondaryDrawerItem().withCheckable(false)
                 )
                 .build();
+        mDrawerResult.getActionBarDrawerToggle().setToolbarNavigationClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                ActionBarDrawerToggle actionBarDrawerToggle = mDrawerResult
+                        .getActionBarDrawerToggle();
+                if (actionBarDrawerToggle.isDrawerIndicatorEnabled()){
+                    if (mDrawerResult.isDrawerOpen()){
+                        mDrawerResult.closeDrawer();
+                    } else {
+                        mDrawerResult.openDrawer();
+                    }
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
 
         checkLogin();
+    }
+
+    public void showTheBackArrow(boolean show){
+        if (show) {
+            mDrawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            mDrawerResult.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        }
     }
 
     private void checkLogin() {
