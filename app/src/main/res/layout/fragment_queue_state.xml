@@ -11,11 +11,11 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/queued_state_warn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="尚未加入队列"
-            android:id="@+id/queued_state_warn"/>
+            android:text="尚未加入队列"/>
 
         <LinearLayout
             android:id="@+id/queued_state_linearLayout"
@@ -49,25 +49,21 @@
                     android:paddingRight="16dp"
                     android:showDividers="middle">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/queued_state_estimated_time_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/queued_state_estimated_time_textView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/md_white_1000"
-                            tools:text="1小时20分钟"/>
-                    </LinearLayout>
+                        android:singleLine="true"
+                        android:paddingBottom="4dp"
+                        android:textColor="@color/md_white_1000"
+                        tools:text="1小时20分钟"/>
 
                     <TextView
                         android:id="@+id/queued_state_state_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingTop="4dp"
+                        android:singleLine="true"
                         android:textColor="@color/md_white_1000"
                         tools:text="剩余位数：3位"/>
                 </LinearLayout>
@@ -168,12 +164,13 @@
                             android:textColor="@color/body_text_1"
                             tools:text="尚未结束"/>
                     </LinearLayout>
+
                     <TextView
                         android:id="@+id/queued_state_token_textView"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/body_text_1"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/body_text_1"
                         tools:text="1a58a0e1b793082c490ea27d7cba26330f95d9e4"/>
                 </LinearLayout>
             </LinearLayout>
