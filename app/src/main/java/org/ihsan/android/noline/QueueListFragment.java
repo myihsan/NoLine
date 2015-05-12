@@ -48,6 +48,10 @@ public class QueueListFragment extends ListFragment {
         QueueAdapter adapter = new QueueAdapter(QueueArray.get(getActivity()).getQueues());
         setListAdapter(adapter);
 
+        getNearQueue();
+    }
+
+    private void getNearQueue() {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService
                 (Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -55,19 +59,19 @@ public class QueueListFragment extends ListFragment {
             double myLat = location.getLatitude();
             double myLng = location.getLongitude();
 
-            double range = 180 / Math.PI * 1 / 6372.797;
-            double lngR = range / Math.cos(myLat * Math.PI / 180.0);
-            double minLat = myLat - range;
-            double maxLat = myLat + range;
-            double minLng = myLng - lngR;
-            double maxLng = myLng + lngR;
+            double rangeLat = 180 / Math.PI / 6372.797;
+            double rangeLng = rangeLat / Math.cos(myLat * Math.PI / 180.0);
+            double minLat = myLat - rangeLat;
+            double maxLat = myLat + rangeLat;
+            double minLng = myLng - rangeLng;
+            double maxLng = myLng + rangeLng;
 
 //            Toast.makeText(getActivity(), minLat + "~" + maxLat + "," + minLng + "~" + maxLng,
 // Toast.LENGTH_SHORT).show();
-            new FetchNearQueueTask().execute(minLat, maxLat, minLng, maxLng);
+            new GetNearQueueTask().execute(minLat, maxLat, minLng, maxLng);
         } else {
 //            Toast.makeText(getActivity(),"无法获取位置，请使用搜索",Toast.LENGTH_SHORT).show();
-            new FetchNearQueueTask().execute(40.074, 40.076, 116.28, 116.3);
+            new GetNearQueueTask().execute(40.074, 40.076, 116.28, 116.3);
         }
     }
 
@@ -103,7 +107,7 @@ public class QueueListFragment extends ListFragment {
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                new FetchNearQueueTask().execute(40.074, 40.076, 116.28, 116.3);
+                getNearQueue();
                 return false;
             }
         });
@@ -145,10 +149,10 @@ public class QueueListFragment extends ListFragment {
     }
 
     public void searchQueue(String keyword) {
-        new FetchQueueTaskByKeyword().execute(keyword);
+        new GetQueueByKeywordTask().execute(keyword);
     }
 
-    private class FetchNearQueueTask extends AsyncTask<Double, Void, ArrayList<Queue>> {
+    private class GetNearQueueTask extends AsyncTask<Double, Void, ArrayList<Queue>> {
         @Override
         protected ArrayList<Queue> doInBackground(Double... params) {
             return new DataFetcher(getActivity()).fetchNearQueue(params[0], params[1], params[2],
@@ -166,7 +170,7 @@ public class QueueListFragment extends ListFragment {
         }
     }
 
-    private class FetchQueueTaskByKeyword extends AsyncTask<String, Void, ArrayList<Queue>> {
+    private class GetQueueByKeywordTask extends AsyncTask<String, Void, ArrayList<Queue>> {
         @Override
         protected ArrayList<Queue> doInBackground(String... params) {
             return new DataFetcher(getActivity()).fetchQueueByKeyword(params[0]);
