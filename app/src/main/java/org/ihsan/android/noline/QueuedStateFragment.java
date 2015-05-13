@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,7 @@ public class QueuedStateFragment extends Fragment {
 
     private boolean mHasArguments = false;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private LinearLayout mLinearLayout;
     private TextView mWarnTextView;
     private TextView mNumberTextView;
@@ -58,6 +60,14 @@ public class QueuedStateFragment extends Fragment {
         getActivity().setTitle("排队记录");
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_queue_state, container, false);
+        mSwipeRefreshLayout= (SwipeRefreshLayout) view.findViewById(R.id.queued_state_swipeRefreshLayout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.primary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadQueuedState();
+            }
+        });
         mLinearLayout = (LinearLayout) view.findViewById(R.id.queued_state_linearLayout);
         mWarnTextView = (TextView) view.findViewById(R.id.queued_state_warn);
         mNumberTextView = (TextView) view.findViewById(R.id.queued_state_number_textView);
@@ -71,6 +81,12 @@ public class QueuedStateFragment extends Fragment {
                 .queued_state_estimated_time_textView);
         stateTextView = (TextView) view.findViewById(R.id.queued_state_state_textView);
 
+        loadQueuedState();
+
+        return view;
+    }
+
+    private void loadQueuedState() {
         Bundle arguments = getArguments();
         int queuedQueue;
         int queuedId;
@@ -80,6 +96,7 @@ public class QueuedStateFragment extends Fragment {
             queuedId = getArguments().getInt(EXTRA_QUEUED_ID);
             mWarnTextView.setVisibility(View.INVISIBLE);
             new GetQueuedStateTask().execute(queuedQueue, queuedId, 1);
+            mSwipeRefreshLayout.setEnabled(true);
         } else {
             SharedPreferences defaultSharedPreferences = PreferenceManager
                     .getDefaultSharedPreferences(getActivity());
@@ -90,12 +107,12 @@ public class QueuedStateFragment extends Fragment {
             if (queuedQueue != -1 && queuedId != -1) {
                 mWarnTextView.setVisibility(View.INVISIBLE);
                 new GetQueuedStateTask().execute(queuedQueue, queuedId, 0);
+                mSwipeRefreshLayout.setEnabled(true);
             } else {
                 mLinearLayout.setVisibility(View.INVISIBLE);
+                mSwipeRefreshLayout.setEnabled(false);
             }
         }
-
-        return view;
     }
 
     @Override
@@ -161,6 +178,7 @@ public class QueuedStateFragment extends Fragment {
             } else {
                 Toast.makeText(mActivity, "获取信息失败，请重试", Toast.LENGTH_LONG).show();
             }
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -180,6 +198,7 @@ public class QueuedStateFragment extends Fragment {
                         .commit();
                 mWarnTextView.setVisibility(View.VISIBLE);
                 mLinearLayout.setVisibility(View.INVISIBLE);
+                mSwipeRefreshLayout.setEnabled(false);
             } else {
                 Toast.makeText(mActivity, "处理失败，请重试", Toast.LENGTH_LONG).show();
             }

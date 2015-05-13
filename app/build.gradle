@@ -29,4 +29,5 @@ dependencies {
     }
     compile 'com.afollestad:material-dialogs:0.7.2.4'
     compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'com.android.support:support-v4:22.1.1'
 }
