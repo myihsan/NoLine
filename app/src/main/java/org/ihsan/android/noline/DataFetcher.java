@@ -177,7 +177,7 @@ public class DataFetcher {
                     if (!isHistory) {
                         PreferenceManager.getDefaultSharedPreferences(mContext)
                                 .edit()
-                                .putString(mContext.getString(R.string.queued_state), result)
+                                .putString(mContext.getString(R.string.queued_state_cache), result)
                                 .commit();
                     }
                     queuedState = new QueuedState(new JSONObject(result));
@@ -186,7 +186,7 @@ public class DataFetcher {
                     Log.e(TAG, "Failed to fetch URL: ", ioe);
                     if (!isHistory) {
                         result = PreferenceManager.getDefaultSharedPreferences(mContext)
-                                .getString(mContext.getString(R.string.queued_state), null);
+                                .getString(mContext.getString(R.string.queued_state_cache), null);
                     }
                     if (result != null) {
                         queuedState = new QueuedState(new JSONObject(result));

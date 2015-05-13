@@ -10,6 +10,6 @@
     <string name="quit_queue">退出队列</string>
     <string name="search_hint">输入商户名</string>
     <string name="logined_user_id">loginedUserId</string>
-    <string name="queued_state">queuedState</string>
+    <string name="queued_state_cache">queuedStateCache</string>
 
 </resources>
