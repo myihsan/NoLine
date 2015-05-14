@@ -131,12 +131,7 @@ public class QueueListFragment extends ListFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            FragmentManager fragmentManager = getFragmentManager();
-            Fragment fragment = new QueuedStateFragment();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, fragment)
-                    .commit();
-            ((QueueListActivity) getActivity()).setDrawerSelection(1);
+            ((QueueListActivity) getActivity()).setDrawerSelection(2);
         }
     }
 
