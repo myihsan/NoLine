@@ -233,7 +233,7 @@ public class QueueDetailFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... params) {
             int queueId = mQueue.getId();
-            return new DataFetcher(getActivity()).fetchIsToggleFavoriteResult(mUserId, queueId,
+            return new DataFetcher(getActivity()).fetchToggleFavoriteResult(mUserId, queueId,
                     mIsFavorite);
         }
 

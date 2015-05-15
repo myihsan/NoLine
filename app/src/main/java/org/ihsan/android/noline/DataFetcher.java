@@ -333,7 +333,7 @@ public class DataFetcher {
         return queueds;
     }
 
-    public boolean fetchIsToggleFavoriteResult(int userId, int queueId, boolean isFavorite) {
+    public boolean fetchToggleFavoriteResult(int userId, int queueId, boolean isFavorite) {
         boolean flag = false;
         String fetchUrl = mContext.getString(R.string.root_url) + "togglefavorite.php";
         String url = Uri.parse(fetchUrl).buildUpon()
