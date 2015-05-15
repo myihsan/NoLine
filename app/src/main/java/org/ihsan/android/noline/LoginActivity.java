@@ -21,11 +21,6 @@ import android.widget.Toast;
 public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
     // UI references.
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -47,18 +42,25 @@ public class LoginActivity extends BaseActivity {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptSubmit(true);
                     return true;
                 }
                 return false;
             }
         });
 
-        Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
-        mSignInButton.setOnClickListener(new OnClickListener() {
+        Button mRegisterButton = (Button) findViewById(R.id.register_button);
+        mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptSubmit(false);
+            }
+        });
+        Button mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptSubmit(true);
             }
         });
 
@@ -82,10 +84,7 @@ public class LoginActivity extends BaseActivity {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    public void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+    public void attemptSubmit(boolean isLogin) {
 
         // Reset errors.
         mUsernameView.setError(null);
@@ -119,8 +118,11 @@ public class LoginActivity extends BaseActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
+            if (isLogin) {
+                new UserLoginTask(username, password).execute();
+            } else {
+                new UserRegisterTask(username,password).execute();
+            }
         }
     }
 
@@ -170,7 +172,6 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Integer userId) {
-            mAuthTask = null;
             showProgress(false);
 
             if (userId == -2) {
@@ -193,7 +194,54 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         protected void onCancelled() {
-            mAuthTask = null;
+            super.onCancelled();
+            showProgress(false);
+        }
+    }
+
+    public class UserRegisterTask extends AsyncTask<Void, Void, Integer> {
+
+        private final String mUsername;
+        private final String mPassword;
+
+        UserRegisterTask(String username, String password) {
+            mUsername = username;
+            mPassword = password;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            return new DataFetcher(LoginActivity.this).fetchRegisterResult(mUsername, mPassword);
+        }
+
+        @Override
+        protected void onPostExecute(Integer userId) {
+            showProgress(false);
+
+            if (userId == -2) {
+                Toast.makeText(LoginActivity.this, "网络连接失败，无法注册", Toast.LENGTH_LONG).show();
+                return;
+            } else if (userId == -1) {
+                Toast.makeText(LoginActivity.this, "注册失败，请重试", Toast.LENGTH_LONG).show();
+            } else if (userId == 0) {
+                mUsernameView.setError(getString(R.string.error_duplicate_username));
+                mUsernameView.requestFocus();
+            } else {
+                PreferenceManager.getDefaultSharedPreferences(LoginActivity.this)
+                        .edit()
+                        .putInt(getString(R.string.logined_user_id), userId)
+                        .commit();
+                Log.d(TAG, "userId: " + userId);
+
+                setResult(RESULT_OK);
+                finish();
+            }
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
             showProgress(false);
         }
     }
