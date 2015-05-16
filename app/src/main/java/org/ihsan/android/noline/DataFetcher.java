@@ -229,12 +229,12 @@ public class DataFetcher {
                 .build().toString();
         try {
             String result = getUrl(url);
-            Log.d(TAG, result);
-            return Integer.valueOf(result);
+            JSONObject jsonObject=new JSONObject(result);
+            return jsonObject.getInt("queuedId");
         } catch (IOException ioe) {
             Log.e(TAG, "Failed to fetch URL: ", ioe);
-        } catch (NumberFormatException nfe) {
-            return -1;
+        } catch (JSONException jsone) {
+            Log.e(TAG, "Failed to parse result", jsone);
         }
         return -1;
     }
