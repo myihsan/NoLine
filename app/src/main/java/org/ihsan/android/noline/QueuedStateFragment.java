@@ -41,6 +41,7 @@ public class QueuedStateFragment extends Fragment {
     private TextView mEstimatedTimeTextView;
     private TextView stateTextView;
     private Activity mActivity;
+    private MenuItem mQuitMenuItem;
 
     public static QueuedStateFragment newInstance(int queuedQueue, int queuedId) {
         Bundle args = new Bundle();
@@ -60,7 +61,8 @@ public class QueuedStateFragment extends Fragment {
         getActivity().setTitle("排队记录");
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_queue_state, container, false);
-        mSwipeRefreshLayout= (SwipeRefreshLayout) view.findViewById(R.id.queued_state_swipeRefreshLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id
+                .queued_state_swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.primary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -120,6 +122,11 @@ public class QueuedStateFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         if (!mHasArguments) {
             inflater.inflate(R.menu.menu_queued_state, menu);
+            mQuitMenuItem = menu.findItem(R.id.action_quit_queue);
+            if (!PreferenceManager.getDefaultSharedPreferences(getActivity()).contains(getString(R
+                    .string.queued_queue))) {
+                mQuitMenuItem.setEnabled(false);
+            }
         }
     }
 
@@ -133,11 +140,7 @@ public class QueuedStateFragment extends Fragment {
                         .getInt(getString(R.string.queued_queue), -1);
                 int queuedId = defaultSharedPreferences
                         .getInt(getString(R.string.queued_id), -1);
-                if (queuedQueue != -1 && queuedId != -1) {
-                    new QuitQueueTask().execute(queuedQueue, queuedId);
-                } else {
-                    Toast.makeText(getActivity(), "尚未加入队列，无法退出", Toast.LENGTH_SHORT).show();
-                }
+                new QuitQueueTask().execute(queuedQueue, queuedId);
                 return true;
             case R.id.action_queued_history:
                 Intent intent = new Intent(getActivity(), QueuedHistoryActivity.class);
@@ -199,6 +202,7 @@ public class QueuedStateFragment extends Fragment {
                 mWarnTextView.setVisibility(View.VISIBLE);
                 mLinearLayout.setVisibility(View.INVISIBLE);
                 mSwipeRefreshLayout.setEnabled(false);
+                mQuitMenuItem.setEnabled(false);
             } else {
                 Toast.makeText(mActivity, "处理失败，请重试", Toast.LENGTH_LONG).show();
             }
