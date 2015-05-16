@@ -30,8 +30,7 @@ import java.util.ArrayList;
  */
 public class QueueDetailFragment extends Fragment {
     public static final String TAG = "QueueDetailFragment";
-    public static final String EXTRA_QUEUE_ID =
-            "org.ihsan.android.noline.queue_id";
+    public static final String EXTRA_QUEUE="org.ihsan.android.noline.queue";
 
     private ImageView mImageView;
     private TextView mNameTextView;
@@ -44,9 +43,9 @@ public class QueueDetailFragment extends Fragment {
     private int mUserId;
     private boolean mIsFavorite = false;
 
-    public static QueueDetailFragment newInstance(int id) {
+    public static QueueDetailFragment newInstance(Queue queue) {
         Bundle args = new Bundle();
-        args.putInt(EXTRA_QUEUE_ID, id);
+        args.putSerializable(EXTRA_QUEUE,queue);
 
         QueueDetailFragment fragment = new QueueDetailFragment();
         fragment.setArguments(args);
@@ -57,12 +56,12 @@ public class QueueDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int queueId = -1;
+        Queue queue= null;
         if (getActivity() != null) {
-            queueId = getArguments().getInt(EXTRA_QUEUE_ID);
+            queue = (Queue) getArguments().getSerializable(EXTRA_QUEUE);
         }
-        if (queueId != -1) {
-            mQueue = QueueArray.get(getActivity()).getQueue(queueId);
+        if (queue != null) {
+            mQueue = queue;
             getActivity().setTitle("商户详情");
         }
     }

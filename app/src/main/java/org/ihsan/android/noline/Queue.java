@@ -3,10 +3,12 @@ package org.ihsan.android.noline;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by Ihsan on 15/2/5.
  */
-public class Queue {
+public class Queue implements Serializable {
     private int mId;
     private String mImage;
     private String mName;

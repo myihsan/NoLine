@@ -1,8 +1,6 @@
 package org.ihsan.android.noline;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -37,7 +35,10 @@ import java.util.ArrayList;
 public class QueueListFragment extends ListFragment {
     private static final String TAG = "QueueListFragment";
     private static final int QUEUE_DETAIL = 1;
+
     private SearchView mSearchView;
+
+    private ArrayList<Queue> mQueues = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class QueueListFragment extends ListFragment {
         getActivity().setTitle("附近商户");
         setHasOptionsMenu(true);
 
-        QueueAdapter adapter = new QueueAdapter(QueueArray.get(getActivity()).getQueues());
+        QueueAdapter adapter = new QueueAdapter(mQueues);
         setListAdapter(adapter);
 
         getNearQueue();
@@ -78,8 +79,7 @@ public class QueueListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), QueueDetailActivity.class);
-        int queueId = ((QueueAdapter) getListAdapter()).getItem(position).getId();
-        intent.putExtra(QueueDetailFragment.EXTRA_QUEUE_ID, queueId);
+        intent.putExtra(QueueDetailFragment.EXTRA_QUEUE, mQueues.get(position));
         startActivityForResult(intent, QUEUE_DETAIL);
     }
 
@@ -153,7 +153,8 @@ public class QueueListFragment extends ListFragment {
         @Override
         protected void onPostExecute(ArrayList<Queue> queues) {
             if (queues != null) {
-                QueueArray.get(getActivity()).refreshQueues(queues);
+                mQueues.clear();
+                mQueues.addAll(queues);
                 updateAdapter();
             } else {
                 Toast.makeText(getActivity(), "获取失败，请重试", Toast.LENGTH_SHORT).show();
@@ -170,7 +171,8 @@ public class QueueListFragment extends ListFragment {
         @Override
         protected void onPostExecute(ArrayList<Queue> queues) {
             if (queues != null) {
-                QueueArray.get(getActivity()).refreshQueues(queues);
+                mQueues.clear();
+                mQueues.addAll(queues);
                 updateAdapter();
                 mSearchView.clearFocus();
             } else {

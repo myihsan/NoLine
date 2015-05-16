@@ -79,8 +79,7 @@ public class FavoriteQueueFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(getActivity(), QueueDetailActivity.class);
-        int queueId = ((QueueAdapter) getListAdapter()).getItem(position).getId();
-        intent.putExtra(QueueDetailFragment.EXTRA_QUEUE_ID, queueId);
+        intent.putExtra(QueueDetailFragment.EXTRA_QUEUE, mQueues.get(position));
         startActivityForResult(intent, QUEUE_DETAIL);
     }
 

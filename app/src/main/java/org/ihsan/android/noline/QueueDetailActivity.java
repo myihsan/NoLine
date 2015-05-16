@@ -9,8 +9,8 @@ import android.os.Bundle;
 public class QueueDetailActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
-        int queueId = getIntent().getIntExtra(QueueDetailFragment.EXTRA_QUEUE_ID, -1);
-        return QueueDetailFragment.newInstance(queueId);
+        Queue queue = (Queue) getIntent().getSerializableExtra(QueueDetailFragment.EXTRA_QUEUE);
+        return QueueDetailFragment.newInstance(queue);
     }
 
     @Override
