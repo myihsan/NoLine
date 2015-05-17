@@ -17,7 +17,6 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
@@ -76,8 +75,8 @@ public class MainActivity extends SingleFragmentActivity {
                         new PrimaryDrawerItem().withName("排队记录").withIcon(R.drawable
                                 .ic_history_grey600_24dp).withIconTinted(true),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withCheckable(false),
-                        new SecondaryDrawerItem().withName("关于").withCheckable(false)
+                        new PrimaryDrawerItem().withCheckable(false),
+                        new PrimaryDrawerItem().withName("关于").withCheckable(false)
                 )
                 .build();
         mDrawerResult.getActionBarDrawerToggle().setToolbarNavigationClickListener(new View
@@ -118,7 +117,7 @@ public class MainActivity extends SingleFragmentActivity {
                 .getDefaultSharedPreferences(this)
                 .getInt(getString(R.string.logined_user_id), -1);
         if (userId != -1) {
-            ((SecondaryDrawerItem) mDrawerResult.getDrawerItems().get(4)).setName("注销");
+            ((PrimaryDrawerItem) mDrawerResult.getDrawerItems().get(4)).setName("注销");
             mDrawerResult.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long
@@ -161,7 +160,7 @@ public class MainActivity extends SingleFragmentActivity {
                 }
             });
         } else {
-            ((SecondaryDrawerItem) mDrawerResult.getDrawerItems().get(4)).setName("登录");
+            ((PrimaryDrawerItem) mDrawerResult.getDrawerItems().get(4)).setName("登录");
             mDrawerResult.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long
