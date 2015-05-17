@@ -106,11 +106,6 @@ public class QueueDetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                if (NavUtils.getParentActivityName(getActivity()) != null) {
-                    NavUtils.navigateUpFromSameTask(getActivity());
-                }
-                return true;
             case R.id.action_favorite:
                 new ToggleFavoriteTask().execute();
                 return true;

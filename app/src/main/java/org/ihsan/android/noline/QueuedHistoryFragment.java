@@ -84,19 +84,6 @@ public class QueuedHistoryFragment extends ListFragment {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (NavUtils.getParentActivityName(getActivity()) != null) {
-                    NavUtils.navigateUpFromSameTask(getActivity());
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 
     public void updateAdapter() {
         ((QueuedAdapter) getListAdapter()).notifyDataSetChanged();

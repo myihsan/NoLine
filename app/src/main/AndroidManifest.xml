@@ -52,7 +52,6 @@
         </activity>
         <activity
             android:name=".QueuedHistoryActivity"
-            android:label="排队历史"
             android:parentActivityName=".QueueListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
