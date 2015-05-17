@@ -30,7 +30,7 @@ import java.util.ArrayList;
  */
 public class QueueDetailFragment extends Fragment {
     public static final String TAG = "QueueDetailFragment";
-    public static final String EXTRA_QUEUE="org.ihsan.android.noline.queue";
+    public static final String EXTRA_QUEUE = "org.ihsan.android.noline.queue";
 
     private ImageView mImageView;
     private TextView mNameTextView;
@@ -45,7 +45,7 @@ public class QueueDetailFragment extends Fragment {
 
     public static QueueDetailFragment newInstance(Queue queue) {
         Bundle args = new Bundle();
-        args.putSerializable(EXTRA_QUEUE,queue);
+        args.putSerializable(EXTRA_QUEUE, queue);
 
         QueueDetailFragment fragment = new QueueDetailFragment();
         fragment.setArguments(args);
@@ -56,7 +56,7 @@ public class QueueDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Queue queue= null;
+        Queue queue = null;
         if (getActivity() != null) {
             queue = (Queue) getArguments().getSerializable(EXTRA_QUEUE);
         }
@@ -163,7 +163,14 @@ public class QueueDetailFragment extends Fragment {
                                     .callback(new MaterialDialog.ButtonCallback() {
                                         @Override
                                         public void onPositive(MaterialDialog dialog) {
-                                            new QueueUpTask().execute(subqueues.indexOf(subqueue));
+                                            if (!PreferenceManager.getDefaultSharedPreferences
+                                                    (getActivity()).contains(getString(R
+                                                    .string.queued_queue))) {
+                                                new QueueUpTask().execute(subqueues.indexOf
+                                                        (subqueue));
+                                            } else {
+                                                Toast.makeText(getActivity(), "正在排队，无法加入新队列", Toast.LENGTH_LONG).show();
+                                            }
                                         }
                                     })
                                     .show();
