@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="define_materialedittext"></string>
+    <!-- Author section -->
+    <string name="library_materialedittext_author">Kai Zhu</string>
+    <string name="library_materialedittext_authorWebsite">http://www.rengwuxian.com/</string>
+    <!-- Library section -->
+    <string name="library_materialedittext_libraryName">MaterialEditText</string>
+    <string name="library_materialedittext_libraryDescription"><![CDATA[AppCompat v21 makes it easy to use Material Design EditText in our apps, but it’s so limited. If you‘ve tried that, you know what I mean. So I wrote MaterialEditText, the EditText in Material Design, with more features that Google Material Design Spec has introduced.]]></string>
+    <string name="library_materialedittext_libraryVersion">2.1.3</string>
+    <string name="library_materialedittext_libraryWebsite">https://github.com/rengwuxian/MaterialEditText</string>
+    <!-- OpenSource section -->
+    <string name="library_materialedittext_isOpenSource">true</string>
+    <string name="library_materialedittext_repositoryLink">https://github.com/rengwuxian/MaterialEditText</string>
+    <!-- License section -->
+    <string name="library_materialedittext_licenseId">apache_2_0</string>
+    <!-- Custom variables section -->
+
+</resources>

@@ -32,4 +32,5 @@ dependencies {
     compile('com.mikepenz.aboutlibraries:library:4.7.2@aar') {
         transitive = true
     }
+    compile 'com.rengwuxian.materialedittext:library:2.1.3'
 }
