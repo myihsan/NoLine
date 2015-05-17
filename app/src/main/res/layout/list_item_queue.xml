@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/md_white_1000"
-              android:gravity="center_vertical"
-              android:minHeight="88dp"
-              android:orientation="horizontal"
-              android:paddingLeft="16dp"
-              android:paddingRight="16dp">
-
-    <ImageView
-        android:id="@+id/queue_list_item_imageView"
-        android:layout_width="72dp"
-        android:layout_height="54dp"
-        android:layout_marginRight="16dp"
-        android:scaleType="fitStart"
-        android:src="@drawable/placeholder"/>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/md_white_1000">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="vertical">
+        android:background="?android:selectableItemBackground"
+        android:gravity="center_vertical"
+        android:minHeight="88dp"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-        <TextView
-            android:id="@+id/queue_list_item_name_textView"
+        <ImageView
+            android:id="@+id/queue_list_item_imageView"
+            android:layout_width="72dp"
+            android:layout_height="54dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/placeholder"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:textColor="@color/body_text_1"
-            android:textSize="20sp"
-            tools:text="队列名预览"
-            />
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
-        <RatingBar
-            android:id="@+id/queue_list_item_ratingBar"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"/>
+            <TextView
+                android:id="@+id/queue_list_item_name_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:textColor="@color/body_text_1"
+                android:textSize="20sp"
+                tools:text="队列名预览"
+                />
+
+            <RatingBar
+                android:id="@+id/queue_list_item_ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"/>
+        </LinearLayout>
+
     </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>
