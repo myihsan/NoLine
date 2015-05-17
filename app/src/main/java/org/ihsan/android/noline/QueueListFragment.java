@@ -107,13 +107,13 @@ public class QueueListFragment extends ListFragment {
         mSearchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((QueueListActivity)getActivity()).showTheBackArrow(true);
+                ((MainActivity)getActivity()).showTheBackArrow(true);
             }
         });
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                ((QueueListActivity)getActivity()).showTheBackArrow(false);
+                ((MainActivity)getActivity()).showTheBackArrow(false);
                 getNearQueue();
                 return false;
             }
@@ -131,7 +131,7 @@ public class QueueListFragment extends ListFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            ((QueueListActivity) getActivity()).setDrawerSelection(2);
+            ((MainActivity) getActivity()).setDrawerSelection(2);
         }
     }
 
